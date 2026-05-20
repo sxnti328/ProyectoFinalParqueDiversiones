@@ -10,10 +10,10 @@ public class Atraccion {
     protected double costoAdicional;
     protected int contadorVisitantes;
     protected int tiempoEspera;
-   // protected EstadoAtraccion estado;
+    protected EstadoAtraccion estado;
     protected String motivoCierre;
     protected Zona zona;
-   // protected ColaVirtual colaVirtual;
+    protected ColaVirtual colaVirtual;
 
     public Atraccion(String id, String nombre, TipoAtraccion tipo, int capacidadMaxima, double alturaMinima, int edadMinima, double costoAdicional) {
 
@@ -27,9 +27,9 @@ public class Atraccion {
 
         this.contadorVisitantes = 0;
         this.tiempoEspera = 0;
-      //  this.estado = EstadoActraccion.ACTIVA;
+        this.estado = EstadoActraccion.ACTIVA;
         this.motivoCierre = "";
-        //this.colaVirtual = new ColaVirtual();
+        this.colaVirtual = new ColaVirtual();
     }
 
     public String getId() {
@@ -105,12 +105,12 @@ public class Atraccion {
     }
 
     public EstadoAtraccion getEstado() {
-      return estado;
+        return estado;
     }
 
     public void setEstado(EstadoAtraccion estado) {
-  this.estado = estado;
-  }
+        this.estado = estado;
+    }
 
     public String getMotivoCierre() {
         return motivoCierre;
