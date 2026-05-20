@@ -1,5 +1,8 @@
 package org.example.proyectofinalparque.model;
 
+import org.example.proyectofinalparque.model.clases.Administrador;
+import org.example.proyectofinalparque.model.clases.Visitante;
+
 import java.util.ArrayList;
 
 public class ParqueDeDiversion {
