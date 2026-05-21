@@ -55,7 +55,7 @@ public class Visitante extends Persona {
     }
 
     public boolean tieneFastPass() {
-        return getTicketActivo() instanceof TicketFastPast;
+        return getTicketActivo() instanceof TicketFastPass;
     }
 
     public void agregarFavorita(String idAtraccion) {

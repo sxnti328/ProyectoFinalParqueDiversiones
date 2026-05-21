@@ -197,7 +197,7 @@ public class ParqueDeAtraccion {
         Ticket ticket;
         switch (tipo) {
             case FAMILIAR  -> ticket = new TicketFamiliar(idTicket, precio, numIntegrantes, "15% descuento");
-            case FAST_PASS -> ticket = new TicketFastPast(idTicket, precio);
+            case FAST_PASS -> ticket = new TicketFastPass(idTicket, precio);
             default        -> ticket = new TicketGeneral(idTicket, precio);
         }
 

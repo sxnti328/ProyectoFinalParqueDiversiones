@@ -4,12 +4,12 @@ import org.example.proyectofinalparque.model.enums.TipoTicket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketFastPast extends Ticket {
+public class TicketFastPass extends Ticket {
 
     private List<String> atraccHabilitadas;
     private int          prioridadCola;
 
-    public TicketFastPast(String id, double precio) {
+    public TicketFastPass(String id, double precio) {
         super(id, TipoTicket.FAST_PASS, precio);
         this.atraccHabilitadas = new ArrayList<>();
         this.prioridadCola     = 1;
@@ -28,10 +28,10 @@ public class TicketFastPast extends Ticket {
         if (!atraccHabilitadas.contains(idAtraccion)) atraccHabilitadas.add(idAtraccion);
     }
 
-    public List<String> getAtraccHabilitadas()                        { return atraccHabilitadas; }
-    public void         setAtraccHabilitadas(List<String> lista)      { this.atraccHabilitadas = lista; }
-    public int          getPrioridadCola()                            { return prioridadCola; }
-    public void         setPrioridadCola(int p)                       { this.prioridadCola = p; }
+    public List<String> getAtraccHabilitadas()                   { return atraccHabilitadas; }
+    public void         setAtraccHabilitadas(List<String> lista) { this.atraccHabilitadas = lista; }
+    public int          getPrioridadCola()                       { return prioridadCola; }
+    public void         setPrioridadCola(int p)                  { this.prioridadCola = p; }
 
     @Override
     public String toString() {

@@ -13,6 +13,10 @@ public class GestorReportes {
         this.parque = parque;
     }
 
+    public Reporte generarReporte() {
+        return new Reporte("REPORTE DIARIO - Tech-Park UQ", generarReporteDiario());
+    }
+
     public String generarReporteDiario() {
         StringBuilder sb = new StringBuilder();
         sb.append("========================================\n");
