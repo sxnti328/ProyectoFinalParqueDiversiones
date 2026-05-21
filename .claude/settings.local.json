@@ -12,7 +12,14 @@
       "Bash(gh pr create --title 'Implementar sistema completo Tech-Park UQ' --body ' *)",
       "Bash(where gh *)",
       "Bash(winget list *)",
-      "PowerShell($cred = Get-StoredCredential -Target \"git:https://github.com\" -ErrorAction SilentlyContinue; if \\($cred\\) { \"Found: \" + $cred.UserName } else { \"Not found via StoredCredential\" })"
+      "PowerShell($cred = Get-StoredCredential -Target \"git:https://github.com\" -ErrorAction SilentlyContinue; if \\($cred\\) { \"Found: \" + $cred.UserName } else { \"Not found via StoredCredential\" })",
+      "Read(//c/Users/restr/Downloads/**)",
+      "Bash(powershell -Command \"Expand-Archive -Path 'src-corregido.zip' -DestinationPath 'src-corregido' -Force\")",
+      "Bash(mvn compile *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(until [ -s \"/c/Users/restr/AppData/Local/Temp/pdfdump.txt\" ]; do sleep 3; done && head -150 \"/c/Users/restr/AppData/Local/Temp/pdfdump.txt\")",
+      "Bash(where mvn *)"
     ]
   }
 }
