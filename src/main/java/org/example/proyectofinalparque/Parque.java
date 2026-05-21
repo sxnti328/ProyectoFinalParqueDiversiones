@@ -30,12 +30,6 @@ public class Parque {
         Atraccion montanaRusa = new Atraccion(
                 "A001", "Montana Rusa Extrema",
                 TipoAtraccion.MECANICA_ALTURA, 20, 1.40, 12, 5000.0);
-        Atraccion ruedaChicago = new Atraccion(
-                "A002", "Rueda de Chicago",
-                TipoAtraccion.RUEDA_CHICAGO, 30, 1.20, 8, 3000.0);
-        Atraccion carrusel = new Atraccion(
-                "A003", "Carrusel Magico",
-                TipoAtraccion.CARRUSEL, 15, 0.80, 3, 0.0);
         Atraccion tobogan = new Atraccion(
                 "A004", "Tobogan Gigante",
                 TipoAtraccion.ACUATICA, 10, 1.10, 6, 4000.0);
@@ -44,8 +38,6 @@ public class Parque {
                 TipoAtraccion.ACUATICA, 50, 0.0, 0, 2000.0);
 
         zonaAventura.agregarAtraccion(montanaRusa);
-        zonaAventura.agregarAtraccion(ruedaChicago);
-        zonaInfantil.agregarAtraccion(carrusel);
         zonaAcuatica.agregarAtraccion(tobogan);
         zonaAcuatica.agregarAtraccion(piscinaOlas);
 
