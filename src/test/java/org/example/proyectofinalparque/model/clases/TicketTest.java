@@ -15,7 +15,7 @@ public class TicketTest {
     @BeforeEach
     public void setUp() {
         ticketGeneral = new TicketGeneral("TG001", 100.0);
-        ticketFamiliar = new TicketFamiliar("TF001", 300.0);
+        ticketFamiliar = new TicketFamiliar("TF001", 300.0, 4, "15% descuento");
         ticketFastPass = new TicketFastPass("TFP001", 200.0);
     }
 
