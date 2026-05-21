@@ -4,14 +4,13 @@ import org.example.proyectofinalparque.model.enums.EstadoActual;
 import org.example.proyectofinalparque.model.enums.MotivoCierre;
 import org.example.proyectofinalparque.model.enums.TipoAtraccion;
 import org.example.proyectofinalparque.model.interfaces.IAccesible;
-import org.example.proyectofinalparque.model.interfaces.IReportable;
 import org.example.proyectofinalparque.model.records.Notificacion;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Atraccion implements IAccesible, IReportable {
+public class Atraccion implements IAccesible {
 
     private static final int LIMITE_MANTENIMIENTO = 500;
 
@@ -62,18 +61,6 @@ public class Atraccion implements IAccesible, IReportable {
 
     @Override
     public EstadoActual getEstado() { return estado; }
-
-    // ── IReportable ─────────────────────────────────────────────────────────
-
-    @Override
-    public String obtenerDatosReporte() {
-        return "Atraccion: " + nombre
-                + " | Tipo: " + tipo
-                + " | Estado: " + estado
-                + " | Visitantes acumulados: " + contadorVisitantes
-                + " | En cola: " + colaVirtual.getTotalEnCola()
-                + " | Tiempo espera: " + tiempoEspera + " min";
-    }
 
     // ── Reglas de negocio ───────────────────────────────────────────────────
 

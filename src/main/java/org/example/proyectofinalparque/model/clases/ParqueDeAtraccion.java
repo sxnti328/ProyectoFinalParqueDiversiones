@@ -228,17 +228,30 @@ public class ParqueDeAtraccion {
 
     public List<Notificacion> activarAlertaClimatica() {
         List<Notificacion> notifs = new ArrayList<>();
+
+        // 1) cerrar atracciones acuaticas/altura en cada zona
         for (Zona z : listZona) {
             Notificacion n = z.activarAlertaClimatica();
             if (n != null) notifs.add(n);
         }
-        // notificar a visitantes con ticket activo
-        for (Visitante v : listVisitante)
-            if (v.getTicketActivo() != null)
-                v.agregarNotificacion(new Notificacion("CLIMA",
-                        "Alerta climatica activa. Algunas atracciones han sido cerradas.",
-                        LocalDate.now()));
+
+        // 2) enviar notificacion simple a cada visitante con ticket activo
+        Notificacion aviso = new Notificacion("CLIMA",
+                "Alerta climatica activa. Algunas atracciones han sido cerradas.",
+                LocalDate.now());
+        for (Visitante v : listVisitante) {
+            if (v.getTicketActivo() != null) {
+                enviarNotificacion(v, aviso);
+            }
+        }
         return notifs;
+    }
+
+    // Envia una notificacion simple a un visitante
+    public void enviarNotificacion(Visitante visitante, Notificacion notificacion) {
+        if (visitante != null && notificacion != null) {
+            visitante.agregarNotificacion(notificacion);
+        }
     }
 
     public void desactivarAlertaClimatica() {

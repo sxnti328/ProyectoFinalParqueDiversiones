@@ -102,14 +102,6 @@ public class AtraccionTest {
     }
 
     @Test
-    public void testObtenerDatosReporte() {
-        String reporte = atraccion.obtenerDatosReporte();
-        assertTrue(reporte.contains("Montaña Rusa"));
-        assertTrue(reporte.contains("MECANICA_ALTURA"));
-        assertTrue(reporte.contains("ACTIVA"));
-    }
-
-    @Test
     public void testCalcularTiempoEspera() {
         int tiempoInicial = atraccion.calcularTiempoEspera();
         assertTrue(tiempoInicial > 0);

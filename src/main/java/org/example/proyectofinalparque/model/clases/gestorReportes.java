@@ -3,10 +3,10 @@ package org.example.proyectofinalparque.model.clases;
 import org.example.proyectofinalparque.model.enums.EstadoActual;
 import org.example.proyectofinalparque.model.enums.MotivoCierre;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// Genera reportes del parque construyendo un objeto Reporte con todos los datos
 public class GestorReportes {
 
     private ParqueDeAtraccion parque;
@@ -15,46 +15,21 @@ public class GestorReportes {
         this.parque = parque;
     }
 
+    // Construye el objeto Reporte completo
     public Reporte generarReporte() {
-        return new Reporte("REPORTE DIARIO - Tech-Park UQ", generarReporteDiario());
+        Reporte reporte = new Reporte("REPORTE DIARIO - " + parque.getNombre());
+        reporte.setIngresosDiarios(calcularIngresosDiarios());
+        reporte.setTotalVisitantes(parque.getListVisitante().size());
+        reporte.setTiempoPromedioEspera(calcularTiempoPromedioEspera());
+        reporte.setAtraccionesMasVisitadas(getAtraccionesMasVisitadas());
+        reporte.setAtraccionesEnMantenimiento(getAtraccionesEnMantenimiento());
+        reporte.setAtraccionesCerradasPorClima(getAtraccionesCerradasPorClima());
+        return reporte;
     }
 
+    // Devuelve el texto del reporte listo para mostrar
     public String generarReporteDiario() {
-        String texto = "";
-        texto += "========================================\n";
-        texto += "   REPORTE DIARIO - Tech-Park UQ\n";
-        texto += "   Fecha: " + LocalDate.now() + "\n";
-        texto += "========================================\n\n";
-
-        texto += "-- INGRESOS DIARIOS --\n";
-        texto += "   Total: $" + calcularIngresosDiarios() + "\n\n";
-
-        texto += "-- VISITANTES --\n";
-        texto += "   Registrados: " + parque.getListVisitante().size() + "\n\n";
-
-        texto += "-- ATRACCIONES MAS VISITADAS --\n";
-        List<Atraccion> top = getAtraccionesMasVisitadas();
-        for (int i = 0; i < top.size() && i < 5; i++) {
-            Atraccion a = top.get(i);
-            texto += "   " + (i + 1) + ". " + a.getNombre()
-                    + " - " + a.getContadorVisitantes() + " visitantes\n";
-        }
-
-        texto += "\n-- ATRACCIONES EN MANTENIMIENTO --\n";
-        for (Atraccion a : getAtraccionesEnMantenimiento()) {
-            texto += "   - " + a.getNombre() + " (" + a.getMotivoCierre() + ")\n";
-        }
-
-        texto += "\n-- CIERRES POR CLIMA --\n";
-        for (Atraccion a : getAtraccionesCerradasPorClima()) {
-            texto += "   - " + a.getNombre() + "\n";
-        }
-
-        texto += "\n-- TIEMPO PROMEDIO DE ESPERA --\n";
-        texto += "   " + calcularTiempoPromedioEspera() + " min\n";
-
-        texto += "\n========================================\n";
-        return texto;
+        return generarReporte().formatearReporte();
     }
 
     public double calcularIngresosDiarios() {

@@ -1,13 +1,12 @@
 package org.example.proyectofinalparque.model.clases;
 
 import org.example.proyectofinalparque.model.interfaces.IGestionable;
-import org.example.proyectofinalparque.model.interfaces.IReportable;
 import org.example.proyectofinalparque.model.records.Notificacion;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Zona implements IGestionable, IReportable {
+public class Zona implements IGestionable {
 
     private String idZona;
     private String nombre;
@@ -48,16 +47,6 @@ public class Zona implements IGestionable, IReportable {
     @Override
     public int getTotalElementos() {
         return listAtraccion.size() + listOperador.size();
-    }
-
-    // ── IReportable ─────────────────────────────────────────────────────────
-
-    @Override
-    public String obtenerDatosReporte() {
-        return "Zona: " + nombre
-                + " | Capacidad: " + visitantesActuales + "/" + capacidadMax
-                + " | Atracciones: " + listAtraccion.size()
-                + " | Operadores: " + listOperador.size();
     }
 
     // ── Métodos específicos ──────────────────────────────────────────────────

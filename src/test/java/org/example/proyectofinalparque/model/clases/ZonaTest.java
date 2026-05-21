@@ -97,7 +97,8 @@ public class ZonaTest {
         zona.agregarAtraccion(atraccion);
         var notif = zona.activarAlertaClimatica();
         assertNotNull(notif);
-        assertTrue(notif.getDescripcion().contains("cerradas"));
+        assertTrue(notif.mensaje().contains("cerradas"));
+        assertEquals("CLIMA", notif.tipo());
     }
 
     @Test
@@ -115,16 +116,6 @@ public class ZonaTest {
         assertFalse(zona.estaLlena());
         zona.setVisitantesActuales(500);
         assertTrue(zona.estaLlena());
-    }
-
-    @Test
-    public void testObtenerDatosReporte() {
-        zona.agregarAtraccion(atraccion);
-        zona.agregarOperador(operador);
-        String reporte = zona.obtenerDatosReporte();
-        assertTrue(reporte.contains("Diversión Acuática"));
-        assertTrue(reporte.contains("Atracciones"));
-        assertTrue(reporte.contains("Operadores"));
     }
 
     @Test
