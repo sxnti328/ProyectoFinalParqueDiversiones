@@ -187,6 +187,14 @@ public class ParqueDeAtraccion {
 
     // ── Reglas de negocio ────────────────────────────────────────────────────
 
+    public String recargarSaldoVisitante(String documentoVisitante, double monto) {
+        Visitante v = buscarVisitante(documentoVisitante);
+        if (v == null) return "Visitante no encontrado.";
+        if (monto <= 0) return "El monto debe ser mayor a cero.";
+        v.recargarSaldo(monto);
+        return "Saldo recargado. Nuevo saldo: $" + v.getSaldoVirtual();
+    }
+
     public String venderTicket(String documentoVisitante, TipoTicket tipo,
                                double precio, int numIntegrantes) {
         Visitante v = buscarVisitante(documentoVisitante);

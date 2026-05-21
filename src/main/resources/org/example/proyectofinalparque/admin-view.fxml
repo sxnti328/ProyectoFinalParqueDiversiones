@@ -6,12 +6,12 @@
 <VBox spacing="8" prefWidth="900" prefHeight="650"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.proyectofinalparque.controller.AdminController">
+      fx:controller="org.example.proyectofinalparque.viewController.AdminViewController">
 
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <HBox spacing="10">
-        <Button text="Volver" onAction="#volver"/>
+        <Button text="Volver" onAction="#onVolver"/>
         <Label text="Panel Administrador"/>
     </HBox>
 
@@ -36,8 +36,8 @@
                     <ComboBox fx:id="cbOpZona"        GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="150"/>
                 </GridPane>
                 <HBox spacing="8">
-                    <Button text="Agregar"  onAction="#guardarOperador"/>
-                    <Button text="Eliminar" onAction="#eliminarOperador"/>
+                    <Button text="Agregar"  onAction="#onGuardarOperador"/>
+                    <Button text="Eliminar" onAction="#onEliminarOperador"/>
                     <Label fx:id="lblOpMsg"/>
                 </HBox>
                 <TableView fx:id="tablaOperadores" prefHeight="280">
@@ -66,8 +66,8 @@
                     <TextField fx:id="txtZonaCap"    GridPane.rowIndex="1" GridPane.columnIndex="3"/>
                 </GridPane>
                 <HBox spacing="8">
-                    <Button text="Agregar"  onAction="#guardarZona"/>
-                    <Button text="Eliminar" onAction="#eliminarZona"/>
+                    <Button text="Agregar"  onAction="#onGuardarZona"/>
+                    <Button text="Eliminar" onAction="#onEliminarZona"/>
                     <Label fx:id="lblZonaMsg"/>
                 </HBox>
                 <TableView fx:id="tablaZonas" prefHeight="320">
@@ -103,8 +103,8 @@
                     <TextField fx:id="txtAtrCosto"   GridPane.rowIndex="3" GridPane.columnIndex="3"/>
                 </GridPane>
                 <HBox spacing="8">
-                    <Button text="Agregar"  onAction="#guardarAtraccion"/>
-                    <Button text="Eliminar" onAction="#eliminarAtraccion"/>
+                    <Button text="Agregar"  onAction="#onGuardarAtraccion"/>
+                    <Button text="Eliminar" onAction="#onEliminarAtraccion"/>
                     <Label fx:id="lblAtrMsg"/>
                 </HBox>
                 <TableView fx:id="tablaAtracciones" prefHeight="240">
@@ -125,8 +125,8 @@
                 <Label text="Al activar la alerta se cierran las atracciones acuaticas y mecanicas de altura."
                        wrapText="true" prefWidth="500"/>
                 <HBox spacing="10" alignment="CENTER">
-                    <Button text="Activar alerta"    onAction="#activarAlertaClimatica"/>
-                    <Button text="Desactivar alerta" onAction="#desactivarAlertaClimatica"/>
+                    <Button text="Activar alerta"    onAction="#onActivarAlerta"/>
+                    <Button text="Desactivar alerta" onAction="#onDesactivarAlerta"/>
                 </HBox>
                 <Label fx:id="lblAlertaMsg"/>
             </VBox>
@@ -135,7 +135,7 @@
         <Tab text="Reportes">
             <VBox spacing="8">
                 <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
-                <Button text="Generar reporte diario" onAction="#generarReporte"/>
+                <Button text="Generar reporte diario" onAction="#onGenerarReporte"/>
                 <TextArea fx:id="txtReporte" editable="false" wrapText="true" prefHeight="500"/>
             </VBox>
         </Tab>

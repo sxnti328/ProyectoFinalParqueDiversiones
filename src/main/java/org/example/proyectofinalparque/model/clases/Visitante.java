@@ -48,6 +48,12 @@ public class Visitante extends Persona {
         return true;
     }
 
+    public void recargarSaldo(double monto) {
+        if (monto > 0) {
+            saldoVirtual += monto;
+        }
+    }
+
     public Ticket getTicketActivo() {
         for (Ticket t : listTickets)
             if (t.isActivo()) return t;

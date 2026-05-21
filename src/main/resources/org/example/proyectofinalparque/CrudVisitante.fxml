@@ -3,17 +3,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="8" prefWidth="600" prefHeight="600"
+<VBox spacing="8" prefWidth="600" prefHeight="580"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.proyectofinalparque.controller.CrudVisitanteController">
+      fx:controller="org.example.proyectofinalparque.viewController.VisitanteViewController">
 
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <HBox spacing="10">
-        <Button text="Volver" onAction="#volver"/>
+        <Button text="Volver" onAction="#onVolver"/>
         <Label text="Gestion de Visitantes"/>
     </HBox>
+
+    <Label text="(El saldo lo recarga un operador)"/>
 
     <GridPane hgap="8" vgap="5">
         <Label text="Nombre:"     GridPane.rowIndex="0" GridPane.columnIndex="0"/>
@@ -28,14 +30,12 @@
         <TextField fx:id="txtDireccion" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
         <Label text="Estatura:"   GridPane.rowIndex="5" GridPane.columnIndex="0"/>
         <TextField fx:id="txtEstatura"  GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <Label text="Saldo:"      GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-        <TextField fx:id="txtSaldo"     GridPane.rowIndex="6" GridPane.columnIndex="1"/>
     </GridPane>
 
     <HBox spacing="8">
-        <Button text="Guardar"    onAction="#guardar"/>
-        <Button text="Actualizar" onAction="#actualizar"/>
-        <Button text="Eliminar"   onAction="#eliminar"/>
+        <Button text="Guardar"    onAction="#onGuardar"/>
+        <Button text="Actualizar" onAction="#onActualizar"/>
+        <Button text="Eliminar"   onAction="#onEliminar"/>
     </HBox>
 
     <Label fx:id="lblMensaje" text=""/>
@@ -59,7 +59,7 @@
         <ComboBox fx:id="cbTipoTicket" prefWidth="120"/>
         <Label text="Precio:"/>
         <TextField fx:id="txtPrecioTicket" prefWidth="100"/>
-        <Button text="Comprar" onAction="#comprarTicket"/>
+        <Button text="Comprar" onAction="#onComprarTicket"/>
     </HBox>
     <Label fx:id="lblTicketMsg" text=""/>
 

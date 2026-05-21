@@ -1,19 +1,21 @@
-package org.example.proyectofinalparque.controller;
+package org.example.proyectofinalparque.viewController;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.proyectofinalparque.HelloApplication;
-import org.example.proyectofinalparque.Parque;
-import org.example.proyectofinalparque.model.clases.*;
+import org.example.proyectofinalparque.App;
+import org.example.proyectofinalparque.controller.VisitanteController;
+import org.example.proyectofinalparque.model.clases.Visitante;
 import org.example.proyectofinalparque.model.enums.TipoTicket;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class VisitanteViewController {
 
-public class CrudVisitanteController implements Initializable {
+    private App app;
+    private VisitanteController visitanteController;
+    private ObservableList<Visitante> listVisitantes = FXCollections.observableArrayList();
+    private Visitante visitanteSeleccionado;
 
     @FXML private TextField txtNombre;
     @FXML private TextField txtDocumento;
@@ -21,7 +23,6 @@ public class CrudVisitanteController implements Initializable {
     @FXML private TextField txtTelefono;
     @FXML private TextField txtDireccion;
     @FXML private TextField txtEstatura;
-    @FXML private TextField txtSaldo;
     @FXML private Label     lblMensaje;
 
     @FXML private TableView<Visitante>            tablaVisitantes;
@@ -37,10 +38,21 @@ public class CrudVisitanteController implements Initializable {
     @FXML private TextField            txtPrecioTicket;
     @FXML private Label                lblTicketMsg;
 
-    private ParqueDeAtraccion parque = Parque.get();
+    public void setApp(App app) {
+        this.app = app;
+        this.visitanteController = new VisitanteController(app.parque);
+        initView();
+    }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    private void initView() {
+        initDataBinding();
+        obtenerVisitantes();
+        tablaVisitantes.setItems(listVisitantes);
+        listenerSeleccion();
+        cbTipoTicket.setItems(FXCollections.observableArrayList(TipoTicket.values()));
+    }
+
+    private void initDataBinding() {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colDocumento.setCellValueFactory(new PropertyValueFactory<>("documento"));
         colEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
@@ -48,40 +60,59 @@ public class CrudVisitanteController implements Initializable {
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         colEstatura.setCellValueFactory(new PropertyValueFactory<>("estatura"));
         colSaldo.setCellValueFactory(new PropertyValueFactory<>("saldoVirtual"));
+    }
 
-        cbTipoTicket.setItems(FXCollections.observableArrayList(TipoTicket.values()));
+    private void obtenerVisitantes() {
+        listVisitantes.clear();
+        listVisitantes.addAll(visitanteController.obtenerListaVisitantes());
+    }
 
-        cargarTabla();
+    private void listenerSeleccion() {
+        tablaVisitantes.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldSel, newSel) -> {
+                    visitanteSeleccionado = newSel;
+                    mostrarInformacion(newSel);
+                });
+    }
+
+    private void mostrarInformacion(Visitante v) {
+        if (v != null) {
+            txtNombre.setText(v.getNombre());
+            txtDocumento.setText(v.getDocumento());
+            txtEdad.setText(String.valueOf(v.getEdad()));
+            txtTelefono.setText(v.getTelefono());
+            txtDireccion.setText(v.getDireccion());
+            txtEstatura.setText(String.valueOf(v.getEstatura()));
+        }
     }
 
     @FXML
-    private void guardar() {
+    private void onGuardar() {
         try {
             String nombre    = txtNombre.getText();
             String documento = txtDocumento.getText();
             int    edad      = Integer.parseInt(txtEdad.getText());
             double estatura  = Double.parseDouble(txtEstatura.getText());
-            double saldo     = Double.parseDouble(txtSaldo.getText());
             String telefono  = txtTelefono.getText();
             String direccion = txtDireccion.getText();
 
-            Visitante v = new Visitante(nombre, documento, edad, estatura, saldo, telefono, direccion);
-            if (parque.agregarVisitante(v)) {
-                lblMensaje.setText("Visitante registrado.");
-                cargarTabla();
+            // El visitante se registra con saldo 0. Lo recarga el operador.
+            Visitante v = new Visitante(nombre, documento, edad, estatura, 0.0, telefono, direccion);
+            if (visitanteController.crearVisitante(v)) {
+                listVisitantes.add(v);
+                lblMensaje.setText("Visitante registrado. Saldo inicial = 0.");
                 limpiarCampos();
             } else {
                 lblMensaje.setText("Documento ya existe o parque lleno.");
             }
         } catch (NumberFormatException e) {
-            lblMensaje.setText("Edad, estatura y saldo deben ser numericos.");
+            lblMensaje.setText("Edad y estatura deben ser numericos.");
         }
     }
 
     @FXML
-    private void actualizar() {
-        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null) {
+    private void onActualizar() {
+        if (visitanteSeleccionado == null) {
             lblMensaje.setText("Seleccione un visitante.");
             return;
         }
@@ -92,51 +123,54 @@ public class CrudVisitanteController implements Initializable {
             String telefono  = txtTelefono.getText();
             String direccion = txtDireccion.getText();
 
-            parque.actualizarVisitante(sel.getDocumento(), nombre, edad, estatura, telefono, direccion);
+            visitanteController.actualizarVisitante(
+                    visitanteSeleccionado.getDocumento(), nombre, edad, estatura, telefono, direccion);
             lblMensaje.setText("Visitante actualizado.");
-            cargarTabla();
+            recargarTabla();
         } catch (NumberFormatException e) {
             lblMensaje.setText("Datos numericos invalidos.");
         }
     }
 
     @FXML
-    private void eliminar() {
-        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null) {
+    private void onEliminar() {
+        if (visitanteSeleccionado == null) {
             lblMensaje.setText("Seleccione un visitante.");
             return;
         }
-        parque.eliminarVisitante(sel.getDocumento());
+        visitanteController.eliminarVisitante(visitanteSeleccionado.getDocumento());
+        listVisitantes.remove(visitanteSeleccionado);
         lblMensaje.setText("Visitante eliminado.");
-        cargarTabla();
         limpiarCampos();
     }
 
     @FXML
-    private void comprarTicket() {
-        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null || cbTipoTicket.getValue() == null) {
+    private void onComprarTicket() {
+        if (visitanteSeleccionado == null || cbTipoTicket.getValue() == null) {
             lblTicketMsg.setText("Seleccione visitante y tipo de ticket.");
             return;
         }
         try {
             double precio = Double.parseDouble(txtPrecioTicket.getText());
-            String res = parque.venderTicket(sel.getDocumento(), cbTipoTicket.getValue(), precio, 4);
+            String res = visitanteController.comprarTicket(
+                    visitanteSeleccionado.getDocumento(), cbTipoTicket.getValue(), precio);
             lblTicketMsg.setText(res);
-            cargarTabla();
+            // Recargamos la tabla para que el saldo se vea actualizado
+            recargarTabla();
         } catch (NumberFormatException e) {
             lblTicketMsg.setText("Precio invalido.");
         }
     }
 
     @FXML
-    private void volver() {
-        HelloApplication.mostrarMenuPrincipal();
+    private void onVolver() {
+        app.mostrarMenuPrincipal();
     }
 
-    private void cargarTabla() {
-        tablaVisitantes.setItems(FXCollections.observableArrayList(parque.getListVisitante()));
+    // refresca la tabla con los datos actualizados del modelo
+    private void recargarTabla() {
+        obtenerVisitantes();
+        tablaVisitantes.refresh();
     }
 
     private void limpiarCampos() {
@@ -146,6 +180,6 @@ public class CrudVisitanteController implements Initializable {
         txtTelefono.clear();
         txtDireccion.clear();
         txtEstatura.clear();
-        txtSaldo.clear();
+        tablaVisitantes.getSelectionModel().clearSelection();
     }
 }
