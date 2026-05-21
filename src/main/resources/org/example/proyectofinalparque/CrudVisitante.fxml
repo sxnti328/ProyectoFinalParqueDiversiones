@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+
+<AnchorPane prefHeight="722.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectofinalparque.controller.CrudVisitanteController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#adb4ba" height="369.0" layoutX="8.0" layoutY="30.0" stroke="BLACK" strokeType="INSIDE" width="566.0" />
+        <Label layoutX="233.0" layoutY="5.0" text="Gestionar Visitantes" />
+        <Label layoutX="24.0" layoutY="48.0" text="Nombre" />
+        <Label layoutX="24.0" layoutY="90.0" text="Identificacion" />
+        <Label layoutX="25.0" layoutY="133.0" text="Edad" />
+        <Label layoutX="21.0" layoutY="217.0" text="Direccion" />
+        <Label layoutX="24.0" layoutY="304.0" text="Saldo Virtuall" />
+        <Label layoutX="25.0" layoutY="258.0" text="Estatura" />
+        <Label layoutX="23.0" layoutY="176.0" text="Telefono" />
+        <TextField layoutX="114.0" layoutY="44.0" prefHeight="25.0" prefWidth="421.0" promptText="Escriba su nombre" />
+        <TextField layoutX="114.0" layoutY="86.0" prefHeight="25.0" prefWidth="421.0" />
+        <TextField layoutX="114.0" layoutY="129.0" prefHeight="25.0" prefWidth="421.0" />
+        <TextField layoutX="114.0" layoutY="172.0" prefHeight="25.0" prefWidth="421.0" />
+        <TextField layoutX="114.0" layoutY="213.0" prefHeight="25.0" prefWidth="421.0" />
+        <TextField layoutX="114.0" layoutY="254.0" prefHeight="25.0" prefWidth="421.0" />
+        <TextField layoutX="114.0" layoutY="300.0" prefHeight="25.0" prefWidth="421.0" />
+        <Label layoutX="24.0" layoutY="415.0" text="Lista Visitantes" />
+        <Button layoutX="172.0" layoutY="348.0" mnemonicParsing="false" text="Guardar" />
+        <Button layoutX="421.0" layoutY="348.0" mnemonicParsing="false" text="Actualizar" />
+        <TableView layoutX="21.0" layoutY="449.0" prefHeight="200.0" prefWidth="529.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="Nombre" />
+                <TableColumn prefWidth="75.0" text="Identificacion" />
+                <TableColumn prefWidth="75.0" text="Edad" />
+                <TableColumn prefWidth="75.0" text="Telefono" />
+                <TableColumn prefWidth="75.0" text="Direccion" />
+                <TableColumn prefWidth="75.0" text="Estatura" />
+                <TableColumn prefWidth="75.0" text="Saldo Virtual" />
+            </columns>
+        </TableView>
+        <Button layoutX="260.0" layoutY="668.0" mnemonicParsing="false" text="Eliminar" />
+    </children>
+</AnchorPane>
