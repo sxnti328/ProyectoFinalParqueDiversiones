@@ -19,13 +19,19 @@ public class Operador extends Empleado {
         return atraccion.getZona().getIdZona().equals(idZona);
     }
 
-    public String getTurno()              { return turno; }
+    public String getTurno()  {
+        return turno; }
     public void   setTurno(String turno)  { this.turno = turno; }
-    public String getIdZona()             { return idZona; }
-    public void   setIdZona(String idZona){ this.idZona = idZona; }
+
+    public String getIdZona()             {
+        return idZona;
+    }
+    public void   setIdZona(String idZona){
+        this.idZona = idZona;
+    }
 
     @Override
     public String toString() {
-        return super.toString() + " | Turno: " + turno + " | Zona: " + idZona;
+        return super.toString() + " Turno: " + turno + "  Zona: " + idZona;
     }
 }

@@ -13,6 +13,10 @@ import org.example.proyectofinalparque.viewController.VisitanteViewController;
 
 public class App extends Application {
 
+    // Tamaño fijo de la ventana para todas las vistas
+    private static final double VENTANA_ANCHO = 950;
+    private static final double VENTANA_ALTO  = 700;
+
     private Stage primaryStage;
 
     // Modelo principal compartido por todas las vistas
@@ -22,6 +26,10 @@ public class App extends Application {
     public void start(Stage stage) {
         this.primaryStage = stage;
         this.primaryStage.setTitle("Parque de Diversiones - Tech-Park UQ");
+        this.primaryStage.setWidth(VENTANA_ANCHO);
+        this.primaryStage.setHeight(VENTANA_ALTO);
+        this.primaryStage.setMinWidth(VENTANA_ANCHO);
+        this.primaryStage.setMinHeight(VENTANA_ALTO);
         inicializarData();
         mostrarMenuPrincipal();
         this.primaryStage.show();
@@ -31,14 +39,18 @@ public class App extends Application {
         this.parque = Parque.get();
     }
 
+    // Cambia la escena manteniendo el tamaño fijo de la ventana
+    private void cambiarEscena(Parent root) {
+        primaryStage.setScene(new Scene(root, VENTANA_ANCHO, VENTANA_ALTO));
+    }
+
     public void mostrarMenuPrincipal() {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("menu-principal.fxml"));
             Parent root = loader.load();
             MainViewController vc = loader.getController();
             vc.setApp(this);
-            primaryStage.setScene(new Scene(root));
-            primaryStage.sizeToScene();
+            cambiarEscena(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,8 +62,7 @@ public class App extends Application {
             Parent root = loader.load();
             VisitanteViewController vc = loader.getController();
             vc.setApp(this);
-            primaryStage.setScene(new Scene(root));
-            primaryStage.sizeToScene();
+            cambiarEscena(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,8 +74,7 @@ public class App extends Application {
             Parent root = loader.load();
             OperadorViewController vc = loader.getController();
             vc.setApp(this);
-            primaryStage.setScene(new Scene(root));
-            primaryStage.sizeToScene();
+            cambiarEscena(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,8 +86,7 @@ public class App extends Application {
             Parent root = loader.load();
             AdminViewController vc = loader.getController();
             vc.setApp(this);
-            primaryStage.setScene(new Scene(root));
-            primaryStage.sizeToScene();
+            cambiarEscena(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
