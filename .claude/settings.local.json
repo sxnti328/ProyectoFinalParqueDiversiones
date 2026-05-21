@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(anthropic-skills:pdf)",
+      "Skill(anthropic-skills:pdf:*)",
+      "Skill(anthropic-skills:docx)",
+      "Skill(anthropic-skills:docx:*)",
+      "Read(//c/Users/restr/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/d7c2a7fd-4169-4e68-8445-1ca2dd432549/39ab6f6b-8e5d-4f4a-9254-6af70dbd4b17/skills/docx/**)",
+      "Bash(python scripts/office/unpack.py \"C:\\\\Users\\\\restr\\\\OneDrive\\\\Documentos\\\\Proyecto Final Programación I - 20261-V1.docx\" unpacked_doc/)",
+      "PowerShell(pandoc \"C:\\\\Users\\\\restr\\\\OneDrive\\\\Documentos\\\\Proyecto Final Programaci�n I - 20261-V1.docx\" -t plain 2>&1)",
+      "Bash(git push *)",
+      "Bash(gh pr create --title 'Implementar sistema completo Tech-Park UQ' --body ' *)",
+      "Bash(where gh *)",
+      "Bash(winget list *)",
+      "PowerShell($cred = Get-StoredCredential -Target \"git:https://github.com\" -ErrorAction SilentlyContinue; if \\($cred\\) { \"Found: \" + $cred.UserName } else { \"Not found via StoredCredential\" })"
+    ]
+  }
+}
