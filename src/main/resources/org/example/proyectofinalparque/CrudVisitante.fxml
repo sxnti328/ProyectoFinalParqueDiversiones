@@ -3,91 +3,64 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" prefWidth="650" prefHeight="760"
-      style="-fx-background-color:#ecf0f1;"
+<VBox spacing="8" prefWidth="600" prefHeight="600"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.proyectofinalparque.controller.CrudVisitanteController">
 
-    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
-    <!-- Cabecera -->
-    <HBox alignment="CENTER_LEFT" spacing="12">
-        <Button text="← Volver" onAction="#volver"
-                style="-fx-background-color:#7f8c8d; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
-        <Label text="Gestión de Visitantes"
-               style="-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+    <HBox spacing="10">
+        <Button text="Volver" onAction="#volver"/>
+        <Label text="Gestion de Visitantes"/>
     </HBox>
 
-    <!-- Formulario -->
-    <TitledPane text="Datos del Visitante" collapsible="false"
-                style="-fx-font-weight:bold;">
-        <GridPane hgap="10" vgap="8">
-            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+    <GridPane hgap="8" vgap="5">
+        <Label text="Nombre:"     GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtNombre"    GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Documento:"  GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtDocumento" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Edad:"       GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtEdad"      GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Telefono:"   GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTelefono"  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Label text="Direccion:"  GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtDireccion" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        <Label text="Estatura:"   GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtEstatura"  GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <Label text="Saldo:"      GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtSaldo"     GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+    </GridPane>
 
-            <Label text="Nombre:"        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="420" promptText="Nombre completo"/>
-
-            <Label text="Documento:"      GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtDocumento" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Número de identificación"/>
-
-            <Label text="Edad:"           GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtEdad"    GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Años"/>
-
-            <Label text="Teléfono:"       GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtTelefono" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Número celular"/>
-
-            <Label text="Dirección:"      GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtDireccion" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Dirección de residencia"/>
-
-            <Label text="Estatura (m):"   GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtEstatura" GridPane.rowIndex="5" GridPane.columnIndex="1" promptText="Ej: 1.75"/>
-
-            <Label text="Saldo Virtual:"  GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-            <TextField fx:id="txtSaldo"   GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="Pesos colombianos"/>
-        </GridPane>
-    </TitledPane>
-
-    <!-- Botones CRUD -->
-    <HBox spacing="10" alignment="CENTER">
-        <Button text="💾 Guardar"     onAction="#guardar"
-                style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:130; -fx-pref-height:34;"/>
-        <Button text="✏️ Actualizar"  onAction="#actualizar"
-                style="-fx-background-color:#f39c12; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:130; -fx-pref-height:34;"/>
-        <Button text="🗑️ Eliminar"    onAction="#eliminar"
-                style="-fx-background-color:#c0392b; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:130; -fx-pref-height:34;"/>
+    <HBox spacing="8">
+        <Button text="Guardar"    onAction="#guardar"/>
+        <Button text="Actualizar" onAction="#actualizar"/>
+        <Button text="Eliminar"   onAction="#eliminar"/>
     </HBox>
 
-    <Label fx:id="lblMensaje" text="" style="-fx-font-size:13;"/>
+    <Label fx:id="lblMensaje" text=""/>
 
-    <!-- Tabla -->
-    <Label text="Lista de Visitantes" style="-fx-font-weight:bold; -fx-font-size:14;"/>
-    <TableView fx:id="tablaVisitantes" prefHeight="200">
+    <Label text="Lista de visitantes:"/>
+    <TableView fx:id="tablaVisitantes" prefHeight="180">
         <columns>
-            <TableColumn fx:id="colNombre"    text="Nombre"     prefWidth="120"/>
-            <TableColumn fx:id="colDocumento" text="Documento"  prefWidth="100"/>
-            <TableColumn fx:id="colEdad"      text="Edad"       prefWidth="50"/>
-            <TableColumn fx:id="colTelefono"  text="Teléfono"   prefWidth="100"/>
-            <TableColumn fx:id="colDireccion" text="Dirección"  prefWidth="130"/>
-            <TableColumn fx:id="colEstatura"  text="Estatura"   prefWidth="70"/>
-            <TableColumn fx:id="colSaldo"     text="Saldo"      prefWidth="85"/>
+            <TableColumn fx:id="colNombre"    text="Nombre"    prefWidth="100"/>
+            <TableColumn fx:id="colDocumento" text="Documento" prefWidth="90"/>
+            <TableColumn fx:id="colEdad"      text="Edad"      prefWidth="50"/>
+            <TableColumn fx:id="colTelefono"  text="Telefono"  prefWidth="90"/>
+            <TableColumn fx:id="colDireccion" text="Direccion" prefWidth="110"/>
+            <TableColumn fx:id="colEstatura"  text="Estatura"  prefWidth="70"/>
+            <TableColumn fx:id="colSaldo"     text="Saldo"     prefWidth="80"/>
         </columns>
-        <placeholder><Label text="No hay visitantes registrados"/></placeholder>
     </TableView>
 
-    <!-- Compra de Ticket -->
-    <TitledPane text="Comprar Ticket" collapsible="false"
-                style="-fx-font-weight:bold;">
-        <HBox spacing="12" alignment="CENTER_LEFT">
-            <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
-            <Label text="Tipo:"/>
-            <ComboBox fx:id="cbTipoTicket" prefWidth="140" promptText="Seleccionar"/>
-            <Label text="Precio $:"/>
-            <TextField fx:id="txtPrecioTicket" prefWidth="110" promptText="Ej: 30000"/>
-            <Button text="🎟️ Comprar" onAction="#comprarTicket"
-                    style="-fx-background-color:#2980b9; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
-        </HBox>
-    </TitledPane>
+    <Label text="Comprar ticket:"/>
+    <HBox spacing="8">
+        <Label text="Tipo:"/>
+        <ComboBox fx:id="cbTipoTicket" prefWidth="120"/>
+        <Label text="Precio:"/>
+        <TextField fx:id="txtPrecioTicket" prefWidth="100"/>
+        <Button text="Comprar" onAction="#comprarTicket"/>
+    </HBox>
+    <Label fx:id="lblTicketMsg" text=""/>
 
-    <Label fx:id="lblTicketMsg" text="" style="-fx-font-size:13;"/>
 </VBox>

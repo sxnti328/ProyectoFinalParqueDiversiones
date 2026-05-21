@@ -24,20 +24,20 @@ public class CrudVisitanteController implements Initializable {
     @FXML private TextField txtSaldo;
     @FXML private Label     lblMensaje;
 
-    @FXML private TableView<Visitante>              tablaVisitantes;
-    @FXML private TableColumn<Visitante, String>    colNombre;
-    @FXML private TableColumn<Visitante, String>    colDocumento;
-    @FXML private TableColumn<Visitante, Integer>   colEdad;
-    @FXML private TableColumn<Visitante, String>    colTelefono;
-    @FXML private TableColumn<Visitante, String>    colDireccion;
-    @FXML private TableColumn<Visitante, Double>    colEstatura;
-    @FXML private TableColumn<Visitante, Double>    colSaldo;
+    @FXML private TableView<Visitante>            tablaVisitantes;
+    @FXML private TableColumn<Visitante, String>  colNombre;
+    @FXML private TableColumn<Visitante, String>  colDocumento;
+    @FXML private TableColumn<Visitante, Integer> colEdad;
+    @FXML private TableColumn<Visitante, String>  colTelefono;
+    @FXML private TableColumn<Visitante, String>  colDireccion;
+    @FXML private TableColumn<Visitante, Double>  colEstatura;
+    @FXML private TableColumn<Visitante, Double>  colSaldo;
 
     @FXML private ComboBox<TipoTicket> cbTipoTicket;
     @FXML private TextField            txtPrecioTicket;
     @FXML private Label                lblTicketMsg;
 
-    private final ParqueDeAtraccion parque = Parque.get();
+    private ParqueDeAtraccion parque = Parque.get();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,98 +49,103 @@ public class CrudVisitanteController implements Initializable {
         colEstatura.setCellValueFactory(new PropertyValueFactory<>("estatura"));
         colSaldo.setCellValueFactory(new PropertyValueFactory<>("saldoVirtual"));
 
-        if (cbTipoTicket != null)
-            cbTipoTicket.setItems(FXCollections.observableArrayList(TipoTicket.values()));
+        cbTipoTicket.setItems(FXCollections.observableArrayList(TipoTicket.values()));
 
         cargarTabla();
-
-        tablaVisitantes.getSelectionModel().selectedItemProperty()
-                .addListener((obs, old, sel) -> { if (sel != null) poblarFormulario(sel); });
     }
 
-    @FXML private void guardar() {
+    @FXML
+    private void guardar() {
         try {
-            Visitante v = new Visitante(
-                    txtNombre.getText().trim(),
-                    txtDocumento.getText().trim(),
-                    Integer.parseInt(txtEdad.getText().trim()),
-                    Double.parseDouble(txtEstatura.getText().trim()),
-                    Double.parseDouble(txtSaldo.getText().trim()),
-                    txtTelefono.getText().trim(),
-                    txtDireccion.getText().trim());
+            String nombre    = txtNombre.getText();
+            String documento = txtDocumento.getText();
+            int    edad      = Integer.parseInt(txtEdad.getText());
+            double estatura  = Double.parseDouble(txtEstatura.getText());
+            double saldo     = Double.parseDouble(txtSaldo.getText());
+            String telefono  = txtTelefono.getText();
+            String direccion = txtDireccion.getText();
+
+            Visitante v = new Visitante(nombre, documento, edad, estatura, saldo, telefono, direccion);
             if (parque.agregarVisitante(v)) {
-                msg(lblMensaje, "✓ Visitante registrado.", false);
-                cargarTabla(); limpiarCampos();
+                lblMensaje.setText("Visitante registrado.");
+                cargarTabla();
+                limpiarCampos();
             } else {
-                msg(lblMensaje, "✗ Documento ya existe o parque lleno.", true);
+                lblMensaje.setText("Documento ya existe o parque lleno.");
             }
         } catch (NumberFormatException e) {
-            msg(lblMensaje, "✗ Edad, estatura y saldo deben ser numéricos.", true);
+            lblMensaje.setText("Edad, estatura y saldo deben ser numericos.");
         }
     }
 
-    @FXML private void actualizar() {
+    @FXML
+    private void actualizar() {
         Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null) { msg(lblMensaje, "✗ Seleccione un visitante.", true); return; }
-        try {
-            parque.actualizarVisitante(sel.getDocumento(),
-                    txtNombre.getText().trim(),
-                    Integer.parseInt(txtEdad.getText().trim()),
-                    Double.parseDouble(txtEstatura.getText().trim()),
-                    txtTelefono.getText().trim(),
-                    txtDireccion.getText().trim());
-            msg(lblMensaje, "✓ Visitante actualizado.", false);
-            cargarTabla();
-        } catch (NumberFormatException e) {
-            msg(lblMensaje, "✗ Datos numéricos inválidos.", true);
-        }
-    }
-
-    @FXML private void eliminar() {
-        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null) { msg(lblMensaje, "✗ Seleccione un visitante.", true); return; }
-        parque.eliminarVisitante(sel.getDocumento());
-        msg(lblMensaje, "✓ Visitante eliminado.", false);
-        cargarTabla(); limpiarCampos();
-    }
-
-    @FXML private void comprarTicket() {
-        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
-        if (sel == null || cbTipoTicket == null || cbTipoTicket.getValue() == null) {
-            if (lblTicketMsg != null) msg(lblTicketMsg, "✗ Seleccione visitante y tipo.", true);
+        if (sel == null) {
+            lblMensaje.setText("Seleccione un visitante.");
             return;
         }
         try {
-            double precio = Double.parseDouble(txtPrecioTicket.getText().trim());
-            String res = parque.venderTicket(sel.getDocumento(), cbTipoTicket.getValue(), precio, 4);
-            if (lblTicketMsg != null) msg(lblTicketMsg, res, res.startsWith("Saldo") || res.startsWith("Visitante"));
+            String nombre    = txtNombre.getText();
+            int    edad      = Integer.parseInt(txtEdad.getText());
+            double estatura  = Double.parseDouble(txtEstatura.getText());
+            String telefono  = txtTelefono.getText();
+            String direccion = txtDireccion.getText();
+
+            parque.actualizarVisitante(sel.getDocumento(), nombre, edad, estatura, telefono, direccion);
+            lblMensaje.setText("Visitante actualizado.");
             cargarTabla();
         } catch (NumberFormatException e) {
-            if (lblTicketMsg != null) msg(lblTicketMsg, "✗ Precio inválido.", true);
+            lblMensaje.setText("Datos numericos invalidos.");
         }
     }
 
-    @FXML private void volver() { HelloApplication.mostrarMenuPrincipal(); }
+    @FXML
+    private void eliminar() {
+        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            lblMensaje.setText("Seleccione un visitante.");
+            return;
+        }
+        parque.eliminarVisitante(sel.getDocumento());
+        lblMensaje.setText("Visitante eliminado.");
+        cargarTabla();
+        limpiarCampos();
+    }
+
+    @FXML
+    private void comprarTicket() {
+        Visitante sel = tablaVisitantes.getSelectionModel().getSelectedItem();
+        if (sel == null || cbTipoTicket.getValue() == null) {
+            lblTicketMsg.setText("Seleccione visitante y tipo de ticket.");
+            return;
+        }
+        try {
+            double precio = Double.parseDouble(txtPrecioTicket.getText());
+            String res = parque.venderTicket(sel.getDocumento(), cbTipoTicket.getValue(), precio, 4);
+            lblTicketMsg.setText(res);
+            cargarTabla();
+        } catch (NumberFormatException e) {
+            lblTicketMsg.setText("Precio invalido.");
+        }
+    }
+
+    @FXML
+    private void volver() {
+        HelloApplication.mostrarMenuPrincipal();
+    }
 
     private void cargarTabla() {
         tablaVisitantes.setItems(FXCollections.observableArrayList(parque.getListVisitante()));
     }
-    private void poblarFormulario(Visitante v) {
-        txtNombre.setText(v.getNombre());
-        txtDocumento.setText(v.getDocumento());
-        txtEdad.setText(String.valueOf(v.getEdad()));
-        txtTelefono.setText(v.getTelefono());
-        txtDireccion.setText(v.getDireccion());
-        txtEstatura.setText(String.valueOf(v.getEstatura()));
-        txtSaldo.setText(String.valueOf(v.getSaldoVirtual()));
-    }
+
     private void limpiarCampos() {
-        txtNombre.clear(); txtDocumento.clear(); txtEdad.clear();
-        txtTelefono.clear(); txtDireccion.clear(); txtEstatura.clear(); txtSaldo.clear();
-    }
-    private void msg(Label lbl, String text, boolean err) {
-        if (lbl == null) return;
-        lbl.setText(text);
-        lbl.setStyle(err ? "-fx-text-fill:#c0392b;" : "-fx-text-fill:#27ae60;");
+        txtNombre.clear();
+        txtDocumento.clear();
+        txtEdad.clear();
+        txtTelefono.clear();
+        txtDireccion.clear();
+        txtEstatura.clear();
+        txtSaldo.clear();
     }
 }

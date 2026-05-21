@@ -3,90 +3,69 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" prefWidth="900" prefHeight="680"
-      style="-fx-background-color:#ecf0f1;"
+<VBox spacing="8" prefWidth="800" prefHeight="600"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.proyectofinalparque.controller.OperadorController">
 
-    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
-    <!-- Cabecera -->
-    <HBox alignment="CENTER_LEFT" spacing="14">
-        <Button text="← Volver" onAction="#volver"
-                style="-fx-background-color:#7f8c8d; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
-        <Label text="Panel Operador — Tech-Park UQ"
-               style="-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+    <HBox spacing="10">
+        <Button text="Volver" onAction="#volver"/>
+        <Label text="Panel Operador"/>
     </HBox>
 
-    <!-- Selección operador -->
-    <HBox spacing="12" alignment="CENTER_LEFT">
-        <Label text="Operador:" style="-fx-font-weight:bold;"/>
-        <ComboBox fx:id="cbOperador" prefWidth="240" promptText="Seleccione operador"
-                  onAction="#seleccionarOperador"/>
-        <Label fx:id="lblInfoOperador" style="-fx-text-fill:#555;"/>
+    <HBox spacing="10">
+        <Label text="Operador:"/>
+        <ComboBox fx:id="cbOperador" prefWidth="220" onAction="#seleccionarOperador"/>
+        <Label fx:id="lblInfoOperador"/>
     </HBox>
-    <Label fx:id="lblZona" style="-fx-font-weight:bold; -fx-text-fill:#2980b9; -fx-font-size:13;"/>
+    <Label fx:id="lblZona"/>
 
-    <!-- Tabla atracciones de la zona -->
-    <Label text="Atracciones de mi Zona:" style="-fx-font-weight:bold; -fx-font-size:13;"/>
-    <TableView fx:id="tablaAtracciones" prefHeight="160">
+    <Label text="Atracciones de la zona:"/>
+    <TableView fx:id="tablaAtracciones" prefHeight="150">
         <columns>
-            <TableColumn fx:id="colNombreA"    text="Nombre"       prefWidth="170"/>
-            <TableColumn fx:id="colTipoA"      text="Tipo"         prefWidth="140"/>
-            <TableColumn fx:id="colEstadoA"    text="Estado"       prefWidth="130"/>
-            <TableColumn fx:id="colVisitantesA" text="Visitantes"  prefWidth="90"/>
-            <TableColumn fx:id="colEsperaA"    text="Espera (min)" prefWidth="100"/>
+            <TableColumn fx:id="colNombreA"     text="Nombre"     prefWidth="150"/>
+            <TableColumn fx:id="colTipoA"       text="Tipo"       prefWidth="120"/>
+            <TableColumn fx:id="colEstadoA"     text="Estado"     prefWidth="120"/>
+            <TableColumn fx:id="colVisitantesA" text="Visitantes" prefWidth="90"/>
+            <TableColumn fx:id="colEsperaA"     text="Espera"     prefWidth="80"/>
         </columns>
-        <placeholder><Label text="Seleccione un operador para ver sus atracciones"/></placeholder>
     </TableView>
 
-    <!-- Secciones de operación en 3 columnas -->
-    <HBox spacing="14">
+    <HBox spacing="10">
 
-        <!-- Validar Acceso -->
-        <TitledPane text="✅ Validar Acceso" collapsible="false" prefWidth="280">
-            <VBox spacing="8">
-                <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
-                <Label text="Documento visitante:"/>
-                <TextField fx:id="txtDocVisitante" promptText="Número documento"/>
-                <Label text="Atracción:"/>
-                <ComboBox fx:id="cbAtraccionAcceso" prefWidth="260" promptText="Seleccionar"/>
-                <Button text="Validar Acceso" onAction="#validarAcceso"
-                        style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:200;"/>
-                <Label fx:id="lblResultadoAcceso" wrapText="true" prefWidth="260"/>
-            </VBox>
-        </TitledPane>
+        <VBox spacing="5" prefWidth="250">
+            <Label text="Validar acceso"/>
+            <Label text="Documento:"/>
+            <TextField fx:id="txtDocVisitante"/>
+            <Label text="Atraccion:"/>
+            <ComboBox fx:id="cbAtraccionAcceso" prefWidth="240"/>
+            <Button text="Validar" onAction="#validarAcceso"/>
+            <Label fx:id="lblResultadoAcceso" wrapText="true"/>
+        </VBox>
 
-        <!-- Cambiar Estado -->
-        <TitledPane text="🔄 Cambiar Estado" collapsible="false" prefWidth="280">
-            <VBox spacing="8">
-                <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
-                <Label text="Atracción:"/>
-                <ComboBox fx:id="cbAtraccionEstado" prefWidth="260" promptText="Seleccionar"/>
-                <Label text="Nuevo estado:"/>
-                <ComboBox fx:id="cbNuevoEstado" prefWidth="260" promptText="Estado"/>
-                <Label text="Motivo (opcional):"/>
-                <ComboBox fx:id="cbMotivo" prefWidth="260" promptText="Motivo"/>
-                <Button text="Cambiar Estado" onAction="#cambiarEstado"
-                        style="-fx-background-color:#f39c12; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:200;"/>
-                <Label fx:id="lblResultadoEstado" wrapText="true" prefWidth="260"/>
-            </VBox>
-        </TitledPane>
+        <VBox spacing="5" prefWidth="250">
+            <Label text="Cambiar estado"/>
+            <Label text="Atraccion:"/>
+            <ComboBox fx:id="cbAtraccionEstado" prefWidth="240"/>
+            <Label text="Nuevo estado:"/>
+            <ComboBox fx:id="cbNuevoEstado" prefWidth="240"/>
+            <Label text="Motivo:"/>
+            <ComboBox fx:id="cbMotivo" prefWidth="240"/>
+            <Button text="Cambiar" onAction="#cambiarEstado"/>
+            <Label fx:id="lblResultadoEstado" wrapText="true"/>
+        </VBox>
 
-        <!-- Revisión Técnica -->
-        <TitledPane text="🔧 Revisión Técnica" collapsible="false" prefWidth="280">
-            <VBox spacing="8">
-                <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
-                <Label text="Atracción en mantenimiento:"/>
-                <ComboBox fx:id="cbAtraccionRevision" prefWidth="260" promptText="Seleccionar"/>
-                <Label text="Descripción:"/>
-                <TextArea fx:id="txtDescripcion" prefHeight="70" prefWidth="260"
-                          promptText="Detalles de la revisión técnica..." wrapText="true"/>
-                <Button text="Registrar Revisión" onAction="#registrarRevision"
-                        style="-fx-background-color:#8e44ad; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand; -fx-pref-width:200;"/>
-                <Label fx:id="lblResultadoRevision" wrapText="true" prefWidth="260"/>
-            </VBox>
-        </TitledPane>
+        <VBox spacing="5" prefWidth="250">
+            <Label text="Revision tecnica"/>
+            <Label text="Atraccion:"/>
+            <ComboBox fx:id="cbAtraccionRevision" prefWidth="240"/>
+            <Label text="Descripcion:"/>
+            <TextArea fx:id="txtDescripcion" prefHeight="60" prefWidth="240" wrapText="true"/>
+            <Button text="Registrar" onAction="#registrarRevision"/>
+            <Label fx:id="lblResultadoRevision" wrapText="true"/>
+        </VBox>
+
     </HBox>
 </VBox>

@@ -1,13 +1,15 @@
 package org.example.proyectofinalparque.model.clases;
 
+import org.example.proyectofinalparque.model.enums.EstadoActual;
+import org.example.proyectofinalparque.model.enums.MotivoCierre;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class GestorReportes {
 
-    private final ParqueDeAtraccion parque;
+    private ParqueDeAtraccion parque;
 
     public GestorReportes(ParqueDeAtraccion parque) {
         this.parque = parque;
@@ -18,78 +20,98 @@ public class GestorReportes {
     }
 
     public String generarReporteDiario() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("========================================\n");
-        sb.append("   REPORTE DIARIO - Tech-Park UQ\n");
-        sb.append("   Fecha: ").append(LocalDate.now()).append("\n");
-        sb.append("========================================\n\n");
+        String texto = "";
+        texto += "========================================\n";
+        texto += "   REPORTE DIARIO - Tech-Park UQ\n";
+        texto += "   Fecha: " + LocalDate.now() + "\n";
+        texto += "========================================\n\n";
 
-        sb.append("-- INGRESOS DIARIOS --\n");
-        sb.append("   Total: $").append(String.format("%.2f", calcularIngresosDiarios())).append("\n\n");
+        texto += "-- INGRESOS DIARIOS --\n";
+        texto += "   Total: $" + calcularIngresosDiarios() + "\n\n";
 
-        sb.append("-- VISITANTES --\n");
-        sb.append("   Registrados: ").append(parque.getListVisitante().size()).append("\n\n");
+        texto += "-- VISITANTES --\n";
+        texto += "   Registrados: " + parque.getListVisitante().size() + "\n\n";
 
-        sb.append("-- ATRACCIONES MAS VISITADAS --\n");
+        texto += "-- ATRACCIONES MAS VISITADAS --\n";
         List<Atraccion> top = getAtraccionesMasVisitadas();
-        int rank = 1;
-        for (Atraccion a : top) {
-            sb.append("   ").append(rank++).append(". ").append(a.getNombre())
-              .append(" - ").append(a.getContadorVisitantes()).append(" visitantes\n");
-            if (rank > 5) break;
+        for (int i = 0; i < top.size() && i < 5; i++) {
+            Atraccion a = top.get(i);
+            texto += "   " + (i + 1) + ". " + a.getNombre()
+                    + " - " + a.getContadorVisitantes() + " visitantes\n";
         }
 
-        sb.append("\n-- ATRACCIONES EN MANTENIMIENTO --\n");
-        for (Atraccion a : getAtraccionesEnMantenimiento())
-            sb.append("   - ").append(a.getNombre())
-              .append(" (").append(a.getMotivoCierre()).append(")\n");
+        texto += "\n-- ATRACCIONES EN MANTENIMIENTO --\n";
+        for (Atraccion a : getAtraccionesEnMantenimiento()) {
+            texto += "   - " + a.getNombre() + " (" + a.getMotivoCierre() + ")\n";
+        }
 
-        sb.append("\n-- CIERRES POR CLIMA --\n");
-        for (Atraccion a : getAtraccionesCerradasPorClima())
-            sb.append("   - ").append(a.getNombre()).append("\n");
+        texto += "\n-- CIERRES POR CLIMA --\n";
+        for (Atraccion a : getAtraccionesCerradasPorClima()) {
+            texto += "   - " + a.getNombre() + "\n";
+        }
 
-        sb.append("\n-- TIEMPO PROMEDIO DE ESPERA --\n");
-        sb.append("   ").append(String.format("%.1f", calcularTiempoPromedioEspera()))
-          .append(" min\n");
+        texto += "\n-- TIEMPO PROMEDIO DE ESPERA --\n";
+        texto += "   " + calcularTiempoPromedioEspera() + " min\n";
 
-        sb.append("\n========================================\n");
-        return sb.toString();
+        texto += "\n========================================\n";
+        return texto;
     }
 
     public double calcularIngresosDiarios() {
         double total = 0;
-        for (Visitante v : parque.getListVisitante())
-            for (Ticket t : v.getListTickets())
+        for (Visitante v : parque.getListVisitante()) {
+            for (Ticket t : v.getListTickets()) {
                 total += t.getPrecioFinal();
+            }
+        }
         return total;
     }
 
+    // ordena las atracciones de mayor a menor por visitantes (bubble sort sencillo)
     public List<Atraccion> getAtraccionesMasVisitadas() {
         List<Atraccion> todas = new ArrayList<>(parque.getTodasLasAtracciones());
-        todas.sort(Comparator.comparingInt(Atraccion::getContadorVisitantes).reversed());
+        for (int i = 0; i < todas.size() - 1; i++) {
+            for (int j = 0; j < todas.size() - 1 - i; j++) {
+                if (todas.get(j).getContadorVisitantes() < todas.get(j + 1).getContadorVisitantes()) {
+                    Atraccion tmp = todas.get(j);
+                    todas.set(j, todas.get(j + 1));
+                    todas.set(j + 1, tmp);
+                }
+            }
+        }
         return todas;
     }
 
     public List<Atraccion> getAtraccionesEnMantenimiento() {
-        List<Atraccion> r = new ArrayList<>();
-        for (Atraccion a : parque.getTodasLasAtracciones())
-            if (a.getEstado() == org.example.proyectofinalparque.model.enums.EstadoActual.EN_MANTENIMIENTO)
-                r.add(a);
-        return r;
+        List<Atraccion> lista = new ArrayList<>();
+        for (Atraccion a : parque.getTodasLasAtracciones()) {
+            if (a.getEstado() == EstadoActual.EN_MANTENIMIENTO) {
+                lista.add(a);
+            }
+        }
+        return lista;
     }
 
     public List<Atraccion> getAtraccionesCerradasPorClima() {
-        List<Atraccion> r = new ArrayList<>();
-        for (Atraccion a : parque.getTodasLasAtracciones())
-            if (a.getMotivoCierre() == org.example.proyectofinalparque.model.enums.MotivoCierre.CLIMA)
-                r.add(a);
-        return r;
+        List<Atraccion> lista = new ArrayList<>();
+        for (Atraccion a : parque.getTodasLasAtracciones()) {
+            if (a.getMotivoCierre() == MotivoCierre.CLIMA) {
+                lista.add(a);
+            }
+        }
+        return lista;
     }
 
     public double calcularTiempoPromedioEspera() {
-        return parque.getTodasLasAtracciones().stream()
-                .filter(a -> a.getEstado() == org.example.proyectofinalparque.model.enums.EstadoActual.ACTIVA)
-                .mapToInt(Atraccion::getTiempoEspera)
-                .average().orElse(0);
+        int suma = 0;
+        int cantidad = 0;
+        for (Atraccion a : parque.getTodasLasAtracciones()) {
+            if (a.getEstado() == EstadoActual.ACTIVA) {
+                suma += a.getTiempoEspera();
+                cantidad++;
+            }
+        }
+        if (cantidad == 0) return 0;
+        return (double) suma / cantidad;
     }
 }

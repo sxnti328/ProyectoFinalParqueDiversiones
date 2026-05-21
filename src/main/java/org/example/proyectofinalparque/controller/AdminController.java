@@ -15,32 +15,32 @@ import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
 
-    // ── Tab Operadores ──────────────────────────────────────────────────────
+    // Tab operadores
     @FXML private TextField txtOpNombre;
     @FXML private TextField txtOpDocumento;
     @FXML private TextField txtOpEdad;
     @FXML private TextField txtOpIdEmp;
     @FXML private TextField txtOpTurno;
     @FXML private ComboBox<Zona> cbOpZona;
-    @FXML private Label     lblOpMsg;
-    @FXML private TableView<Operador>            tablaOperadores;
-    @FXML private TableColumn<Operador, String>  colOpNombre;
-    @FXML private TableColumn<Operador, String>  colOpDoc;
-    @FXML private TableColumn<Operador, String>  colOpTurno;
-    @FXML private TableColumn<Operador, String>  colOpZona;
+    @FXML private Label lblOpMsg;
+    @FXML private TableView<Operador> tablaOperadores;
+    @FXML private TableColumn<Operador, String> colOpNombre;
+    @FXML private TableColumn<Operador, String> colOpDoc;
+    @FXML private TableColumn<Operador, String> colOpTurno;
+    @FXML private TableColumn<Operador, String> colOpZona;
 
-    // ── Tab Zonas ───────────────────────────────────────────────────────────
+    // Tab zonas
     @FXML private TextField txtZonaId;
     @FXML private TextField txtZonaNombre;
     @FXML private TextField txtZonaDesc;
     @FXML private TextField txtZonaCap;
-    @FXML private Label     lblZonaMsg;
-    @FXML private TableView<Zona>            tablaZonas;
+    @FXML private Label lblZonaMsg;
+    @FXML private TableView<Zona> tablaZonas;
     @FXML private TableColumn<Zona, String>  colZonaId;
     @FXML private TableColumn<Zona, String>  colZonaNombre;
     @FXML private TableColumn<Zona, Integer> colZonaCap;
 
-    // ── Tab Atracciones ─────────────────────────────────────────────────────
+    // Tab atracciones
     @FXML private TextField txtAtrId;
     @FXML private TextField txtAtrNombre;
     @FXML private ComboBox<TipoAtraccion> cbAtrTipo;
@@ -49,189 +49,186 @@ public class AdminController implements Initializable {
     @FXML private TextField txtAtrEdad;
     @FXML private TextField txtAtrCosto;
     @FXML private ComboBox<Zona> cbAtrZona;
-    @FXML private Label     lblAtrMsg;
-    @FXML private TableView<Atraccion>            tablaAtracciones;
+    @FXML private Label lblAtrMsg;
+    @FXML private TableView<Atraccion> tablaAtracciones;
     @FXML private TableColumn<Atraccion, String>  colAtrNombre;
     @FXML private TableColumn<Atraccion, String>  colAtrTipo;
     @FXML private TableColumn<Atraccion, String>  colAtrEstado;
     @FXML private TableColumn<Atraccion, Integer> colAtrVisitantes;
 
-    // ── Tab Alertas / Reportes ───────────────────────────────────────────────
+    // Alertas y reportes
     @FXML private Label    lblAlertaMsg;
     @FXML private TextArea txtReporte;
 
-    private final ParqueDeAtraccion parque = Parque.get();
+    private ParqueDeAtraccion parque = Parque.get();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Operadores
-        if (colOpNombre   != null) colOpNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        if (colOpDoc      != null) colOpDoc.setCellValueFactory(new PropertyValueFactory<>("documento"));
-        if (colOpTurno    != null) colOpTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
-        if (colOpZona     != null) colOpZona.setCellValueFactory(new PropertyValueFactory<>("idZona"));
-        if (cbOpZona      != null) cbOpZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
+        colOpNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colOpDoc.setCellValueFactory(new PropertyValueFactory<>("documento"));
+        colOpTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
+        colOpZona.setCellValueFactory(new PropertyValueFactory<>("idZona"));
+        cbOpZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
 
         // Zonas
-        if (colZonaId     != null) colZonaId.setCellValueFactory(new PropertyValueFactory<>("idZona"));
-        if (colZonaNombre != null) colZonaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        if (colZonaCap    != null) colZonaCap.setCellValueFactory(new PropertyValueFactory<>("capacidadMax"));
+        colZonaId.setCellValueFactory(new PropertyValueFactory<>("idZona"));
+        colZonaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colZonaCap.setCellValueFactory(new PropertyValueFactory<>("capacidadMax"));
 
         // Atracciones
-        if (colAtrNombre    != null) colAtrNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        if (colAtrTipo      != null) colAtrTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-        if (colAtrEstado    != null) colAtrEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        if (colAtrVisitantes!= null) colAtrVisitantes.setCellValueFactory(new PropertyValueFactory<>("contadorVisitantes"));
-        if (cbAtrTipo       != null) cbAtrTipo.setItems(FXCollections.observableArrayList(TipoAtraccion.values()));
-        if (cbAtrZona       != null) cbAtrZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
+        colAtrNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colAtrTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        colAtrEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        colAtrVisitantes.setCellValueFactory(new PropertyValueFactory<>("contadorVisitantes"));
+        cbAtrTipo.setItems(FXCollections.observableArrayList(TipoAtraccion.values()));
+        cbAtrZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
 
         cargarTodas();
     }
 
-    // ── Operadores ──────────────────────────────────────────────────────────
+    // ----------------- Operadores -----------------
 
-    @FXML private void guardarOperador() {
+    @FXML
+    private void guardarOperador() {
         try {
-            Zona z = cbOpZona != null ? cbOpZona.getValue() : null;
-            String idZona = z != null ? z.getIdZona() : "";
-            Operador op = new Operador(
-                    txtOpNombre.getText().trim(), txtOpDocumento.getText().trim(),
-                    Integer.parseInt(txtOpEdad.getText().trim()),
-                    txtOpIdEmp.getText().trim(),
-                    txtOpTurno.getText().trim(), idZona);
+            Zona z = cbOpZona.getValue();
+            String idZona = (z != null) ? z.getIdZona() : "";
+            String nombre = txtOpNombre.getText();
+            String doc    = txtOpDocumento.getText();
+            int edad      = Integer.parseInt(txtOpEdad.getText());
+            String idEmp  = txtOpIdEmp.getText();
+            String turno  = txtOpTurno.getText();
+
+            Operador op = new Operador(nombre, doc, edad, idEmp, turno, idZona);
             if (parque.agregarOperador(op)) {
                 if (z != null) z.agregarOperador(op);
-                msg(lblOpMsg, "✓ Operador agregado.", false);
+                lblOpMsg.setText("Operador agregado.");
                 cargarTodas();
-                limpiarOp();
             } else {
-                msg(lblOpMsg, "✗ Ya existe ese documento.", true);
+                lblOpMsg.setText("Ya existe ese documento.");
             }
         } catch (NumberFormatException e) {
-            msg(lblOpMsg, "✗ Edad inválida.", true);
+            lblOpMsg.setText("Edad invalida.");
         }
     }
 
-    @FXML private void eliminarOperador() {
-        Operador sel = tablaOperadores != null
-                ? tablaOperadores.getSelectionModel().getSelectedItem() : null;
-        if (sel == null) { msg(lblOpMsg, "✗ Seleccione un operador.", true); return; }
+    @FXML
+    private void eliminarOperador() {
+        Operador sel = tablaOperadores.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            lblOpMsg.setText("Seleccione un operador.");
+            return;
+        }
         parque.eliminarOperador(sel.getDocumento());
-        msg(lblOpMsg, "✓ Operador eliminado.", false);
+        lblOpMsg.setText("Operador eliminado.");
         cargarTodas();
     }
 
-    // ── Zonas ───────────────────────────────────────────────────────────────
+    // ----------------- Zonas -----------------
 
-    @FXML private void guardarZona() {
+    @FXML
+    private void guardarZona() {
         try {
-            Zona z = new Zona(txtZonaId.getText().trim(), txtZonaNombre.getText().trim(),
-                    txtZonaDesc.getText().trim(), Integer.parseInt(txtZonaCap.getText().trim()));
+            String id     = txtZonaId.getText();
+            String nombre = txtZonaNombre.getText();
+            String desc   = txtZonaDesc.getText();
+            int cap       = Integer.parseInt(txtZonaCap.getText());
+
+            Zona z = new Zona(id, nombre, desc, cap);
             if (parque.agregarZona(z)) {
-                msg(lblZonaMsg, "✓ Zona agregada.", false);
+                lblZonaMsg.setText("Zona agregada.");
                 cargarTodas();
-                actualizarCombosZona();
-                limpiarZona();
+                cbOpZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
+                cbAtrZona.setItems(FXCollections.observableArrayList(parque.getListZona()));
             } else {
-                msg(lblZonaMsg, "✗ Ya existe esa zona.", true);
+                lblZonaMsg.setText("Ya existe esa zona.");
             }
         } catch (NumberFormatException e) {
-            msg(lblZonaMsg, "✗ Capacidad inválida.", true);
+            lblZonaMsg.setText("Capacidad invalida.");
         }
     }
 
-    @FXML private void eliminarZona() {
-        Zona sel = tablaZonas != null
-                ? tablaZonas.getSelectionModel().getSelectedItem() : null;
-        if (sel == null) { msg(lblZonaMsg, "✗ Seleccione una zona.", true); return; }
+    @FXML
+    private void eliminarZona() {
+        Zona sel = tablaZonas.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            lblZonaMsg.setText("Seleccione una zona.");
+            return;
+        }
         parque.eliminarZona(sel.getIdZona());
-        msg(lblZonaMsg, "✓ Zona eliminada.", false);
+        lblZonaMsg.setText("Zona eliminada.");
         cargarTodas();
     }
 
-    // ── Atracciones ─────────────────────────────────────────────────────────
+    // ----------------- Atracciones -----------------
 
-    @FXML private void guardarAtraccion() {
+    @FXML
+    private void guardarAtraccion() {
         try {
-            Zona z = cbAtrZona != null ? cbAtrZona.getValue() : null;
-            TipoAtraccion tipo = cbAtrTipo != null ? cbAtrTipo.getValue() : TipoAtraccion.FAMILIAR;
-            if (z == null || tipo == null) { msg(lblAtrMsg, "✗ Seleccione zona y tipo.", true); return; }
-            Atraccion a = new Atraccion(
-                    txtAtrId.getText().trim(), txtAtrNombre.getText().trim(), tipo,
-                    Integer.parseInt(txtAtrCap.getText().trim()),
-                    Double.parseDouble(txtAtrAltura.getText().trim()),
-                    Integer.parseInt(txtAtrEdad.getText().trim()),
-                    Double.parseDouble(txtAtrCosto.getText().trim()));
+            Zona z = cbAtrZona.getValue();
+            TipoAtraccion tipo = cbAtrTipo.getValue();
+            if (z == null || tipo == null) {
+                lblAtrMsg.setText("Seleccione zona y tipo.");
+                return;
+            }
+            String id      = txtAtrId.getText();
+            String nombre  = txtAtrNombre.getText();
+            int cap        = Integer.parseInt(txtAtrCap.getText());
+            double altura  = Double.parseDouble(txtAtrAltura.getText());
+            int edad       = Integer.parseInt(txtAtrEdad.getText());
+            double costo   = Double.parseDouble(txtAtrCosto.getText());
+
+            Atraccion a = new Atraccion(id, nombre, tipo, cap, altura, edad, costo);
             parque.agregarAtraccionAZona(z.getIdZona(), a);
-            msg(lblAtrMsg, "✓ Atraccion agregada a zona " + z.getNombre(), false);
+            lblAtrMsg.setText("Atraccion agregada a zona " + z.getNombre());
             cargarTodas();
-            limpiarAtr();
         } catch (NumberFormatException e) {
-            msg(lblAtrMsg, "✗ Verifique los campos numéricos.", true);
+            lblAtrMsg.setText("Revise los datos numericos.");
         }
     }
 
-    @FXML private void eliminarAtraccion() {
-        Atraccion sel = tablaAtracciones != null
-                ? tablaAtracciones.getSelectionModel().getSelectedItem() : null;
+    @FXML
+    private void eliminarAtraccion() {
+        Atraccion sel = tablaAtracciones.getSelectionModel().getSelectedItem();
         if (sel == null || sel.getZona() == null) {
-            msg(lblAtrMsg, "✗ Seleccione una atracción.", true); return;
+            lblAtrMsg.setText("Seleccione una atraccion.");
+            return;
         }
         parque.eliminarAtraccionDeZona(sel.getZona().getIdZona(), sel.getId());
-        msg(lblAtrMsg, "✓ Atraccion eliminada.", false);
+        lblAtrMsg.setText("Atraccion eliminada.");
         cargarTodas();
     }
 
-    // ── Alertas / Reportes ───────────────────────────────────────────────────
+    // ----------------- Alertas y reportes -----------------
 
-    @FXML private void activarAlertaClimatica() {
-        var notifs = parque.activarAlertaClimatica();
-        if (lblAlertaMsg != null)
-            msg(lblAlertaMsg,
-                    "⚡ Alerta climática activada. " + notifs.size() + " zona(s) afectadas.",
-                    false);
+    @FXML
+    private void activarAlertaClimatica() {
+        parque.activarAlertaClimatica();
+        lblAlertaMsg.setText("Alerta climatica activada.");
         cargarTodas();
     }
 
-    @FXML private void desactivarAlertaClimatica() {
+    @FXML
+    private void desactivarAlertaClimatica() {
         parque.desactivarAlertaClimatica();
-        if (lblAlertaMsg != null)
-            msg(lblAlertaMsg, "✓ Alerta climática desactivada.", false);
+        lblAlertaMsg.setText("Alerta climatica desactivada.");
         cargarTodas();
     }
 
-    @FXML private void generarReporte() {
-        if (txtReporte != null)
-            txtReporte.setText(parque.generarReporteDiario());
+    @FXML
+    private void generarReporte() {
+        txtReporte.setText(parque.generarReporteDiario());
     }
 
-    @FXML private void volver() {
+    @FXML
+    private void volver() {
         HelloApplication.mostrarMenuPrincipal();
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
-
     private void cargarTodas() {
-        if (tablaOperadores  != null)
-            tablaOperadores.setItems(FXCollections.observableArrayList(parque.getListOperador()));
-        if (tablaZonas       != null)
-            tablaZonas.setItems(FXCollections.observableArrayList(parque.getListZona()));
-        if (tablaAtracciones != null)
-            tablaAtracciones.setItems(FXCollections.observableArrayList(parque.getTodasLasAtracciones()));
+        tablaOperadores.setItems(FXCollections.observableArrayList(parque.getListOperador()));
+        tablaZonas.setItems(FXCollections.observableArrayList(parque.getListZona()));
+        tablaAtracciones.setItems(FXCollections.observableArrayList(parque.getTodasLasAtracciones()));
     }
-
-    private void actualizarCombosZona() {
-        var zonas = FXCollections.observableArrayList(parque.getListZona());
-        if (cbOpZona  != null) cbOpZona.setItems(zonas);
-        if (cbAtrZona != null) cbAtrZona.setItems(zonas);
-    }
-
-    private void msg(Label lbl, String text, boolean err) {
-        if (lbl == null) return;
-        lbl.setText(text);
-        lbl.setStyle(err ? "-fx-text-fill:#c0392b;" : "-fx-text-fill:#27ae60;");
-    }
-
-    private void limpiarOp()  { txtOpNombre.clear(); txtOpDocumento.clear(); txtOpEdad.clear(); txtOpIdEmp.clear(); txtOpTurno.clear(); }
-    private void limpiarZona(){ txtZonaId.clear(); txtZonaNombre.clear(); txtZonaDesc.clear(); txtZonaCap.clear(); }
-    private void limpiarAtr() { txtAtrId.clear(); txtAtrNombre.clear(); txtAtrCap.clear(); txtAtrAltura.clear(); txtAtrEdad.clear(); txtAtrCosto.clear(); }
 }

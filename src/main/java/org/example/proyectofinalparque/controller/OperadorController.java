@@ -16,9 +16,9 @@ import java.util.ResourceBundle;
 
 public class OperadorController implements Initializable {
 
-    @FXML private ComboBox<Operador>  cbOperador;
-    @FXML private Label               lblZona;
-    @FXML private Label               lblInfoOperador;
+    @FXML private ComboBox<Operador> cbOperador;
+    @FXML private Label              lblZona;
+    @FXML private Label              lblInfoOperador;
 
     @FXML private TableView<Atraccion>            tablaAtracciones;
     @FXML private TableColumn<Atraccion, String>  colNombreA;
@@ -27,23 +27,20 @@ public class OperadorController implements Initializable {
     @FXML private TableColumn<Atraccion, Integer> colVisitantesA;
     @FXML private TableColumn<Atraccion, Integer> colEsperaA;
 
-    // Sección validación acceso
     @FXML private TextField txtDocVisitante;
     @FXML private ComboBox<Atraccion> cbAtraccionAcceso;
-    @FXML private Label               lblResultadoAcceso;
+    @FXML private Label lblResultadoAcceso;
 
-    // Sección cambiar estado
     @FXML private ComboBox<Atraccion>    cbAtraccionEstado;
     @FXML private ComboBox<EstadoActual> cbNuevoEstado;
     @FXML private ComboBox<MotivoCierre> cbMotivo;
-    @FXML private Label                  lblResultadoEstado;
+    @FXML private Label lblResultadoEstado;
 
-    // Sección revisión técnica
     @FXML private ComboBox<Atraccion> cbAtraccionRevision;
-    @FXML private TextArea            txtDescripcion;
-    @FXML private Label               lblResultadoRevision;
+    @FXML private TextArea txtDescripcion;
+    @FXML private Label lblResultadoRevision;
 
-    private final ParqueDeAtraccion parque = Parque.get();
+    private ParqueDeAtraccion parque = Parque.get();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -62,75 +59,64 @@ public class OperadorController implements Initializable {
     private void seleccionarOperador() {
         Operador op = cbOperador.getValue();
         if (op == null) return;
+
         Zona zona = parque.buscarZona(op.getIdZona());
         lblInfoOperador.setText("Operador: " + op.getNombre() + " | Turno: " + op.getTurno());
-        lblZona.setText(zona != null ? "Zona: " + zona.getNombre() : "Sin zona asignada");
 
         if (zona != null) {
-            var lista = FXCollections.observableArrayList(zona.getListAtraccion());
-            tablaAtracciones.setItems(lista);
-            cbAtraccionAcceso.setItems(lista);
-            cbAtraccionEstado.setItems(lista);
-            cbAtraccionRevision.setItems(lista);
+            lblZona.setText("Zona: " + zona.getNombre());
+            tablaAtracciones.setItems(FXCollections.observableArrayList(zona.getListAtraccion()));
+            cbAtraccionAcceso.setItems(FXCollections.observableArrayList(zona.getListAtraccion()));
+            cbAtraccionEstado.setItems(FXCollections.observableArrayList(zona.getListAtraccion()));
+            cbAtraccionRevision.setItems(FXCollections.observableArrayList(zona.getListAtraccion()));
+        } else {
+            lblZona.setText("Sin zona asignada");
         }
     }
 
     @FXML
     private void validarAcceso() {
-        String doc = txtDocVisitante.getText().trim();
+        String doc = txtDocVisitante.getText();
         Atraccion a = cbAtraccionAcceso.getValue();
         if (doc.isEmpty() || a == null) {
-            lblResultadoAcceso.setText("✗ Complete documento y atracción.");
-            lblResultadoAcceso.setStyle("-fx-text-fill:#c0392b;");
+            lblResultadoAcceso.setText("Complete documento y atraccion.");
             return;
         }
         String resultado = parque.ingresarAAtraccion(doc, a.getId());
-        boolean ok = resultado.startsWith("Acceso");
         lblResultadoAcceso.setText(resultado);
-        lblResultadoAcceso.setStyle(ok ? "-fx-text-fill:#27ae60;" : "-fx-text-fill:#c0392b;");
-        refrescarTabla();
+        tablaAtracciones.refresh();
     }
 
     @FXML
     private void cambiarEstado() {
-        Operador  op     = cbOperador.getValue();
-        Atraccion a      = cbAtraccionEstado.getValue();
+        Atraccion a = cbAtraccionEstado.getValue();
         EstadoActual est = cbNuevoEstado.getValue();
         MotivoCierre mot = cbMotivo.getValue();
-        if (op == null || a == null || est == null) {
-            lblResultadoEstado.setText("✗ Seleccione operador, atracción y estado.");
-            lblResultadoEstado.setStyle("-fx-text-fill:#c0392b;");
+        if (a == null || est == null) {
+            lblResultadoEstado.setText("Seleccione atraccion y estado.");
             return;
         }
         a.cambiarEstado(est, mot);
-        lblResultadoEstado.setText("✓ Estado de '" + a.getNombre() + "' cambiado a " + est);
-        lblResultadoEstado.setStyle("-fx-text-fill:#27ae60;");
-        refrescarTabla();
+        lblResultadoEstado.setText("Estado de " + a.getNombre() + " cambiado a " + est);
+        tablaAtracciones.refresh();
     }
 
     @FXML
     private void registrarRevision() {
-        Operador  op  = cbOperador.getValue();
-        Atraccion a   = cbAtraccionRevision.getValue();
-        String    desc = txtDescripcion != null ? txtDescripcion.getText().trim() : "Sin descripcion";
+        Operador op = cbOperador.getValue();
+        Atraccion a = cbAtraccionRevision.getValue();
+        String desc = txtDescripcion.getText();
         if (op == null || a == null) {
-            lblResultadoRevision.setText("✗ Seleccione operador y atracción.");
-            lblResultadoRevision.setStyle("-fx-text-fill:#c0392b;");
+            lblResultadoRevision.setText("Seleccione operador y atraccion.");
             return;
         }
         String resultado = parque.registrarRevisionTecnica(op.getDocumento(), a.getId(), desc);
-        boolean ok = resultado.startsWith("Revision");
         lblResultadoRevision.setText(resultado);
-        lblResultadoRevision.setStyle(ok ? "-fx-text-fill:#27ae60;" : "-fx-text-fill:#c0392b;");
-        refrescarTabla();
+        tablaAtracciones.refresh();
     }
 
     @FXML
     private void volver() {
         HelloApplication.mostrarMenuPrincipal();
-    }
-
-    private void refrescarTabla() {
-        tablaAtracciones.refresh();
     }
 }

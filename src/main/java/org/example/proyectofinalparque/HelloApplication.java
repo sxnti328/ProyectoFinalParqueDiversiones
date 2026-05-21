@@ -5,8 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class HelloApplication extends Application {
 
     public static Stage primaryStage;
@@ -14,37 +12,34 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
-        primaryStage.setTitle("Tech-Park UQ - Sistema de Gestión");
-        primaryStage.setResizable(false);
+        primaryStage.setTitle("Parque de Diversiones");
         mostrarMenuPrincipal();
         primaryStage.show();
     }
 
     public static void mostrarMenuPrincipal() {
-        cambiarEscena("menu-principal.fxml", 600, 480);
+        cambiarEscena("menu-principal.fxml");
     }
 
     public static void mostrarVisitante() {
-        cambiarEscena("CrudVisitante.fxml", 650, 760);
+        cambiarEscena("CrudVisitante.fxml");
     }
 
     public static void mostrarOperador() {
-        cambiarEscena("operador-view.fxml", 900, 680);
+        cambiarEscena("operador-view.fxml");
     }
 
     public static void mostrarAdmin() {
-        cambiarEscena("admin-view.fxml", 1000, 740);
+        cambiarEscena("admin-view.fxml");
     }
 
-    private static void cambiarEscena(String fxml, int width, int height) {
+    private static void cambiarEscena(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    HelloApplication.class.getResource(fxml));
-            Scene scene = new Scene(loader.load(), width, height);
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource(fxml));
+            Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.sizeToScene();
-        } catch (IOException e) {
-            System.err.println("Error cargando escena " + fxml + ": " + e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
