@@ -1,4 +1,11 @@
 package org.example.proyectofinalparque.model.records;
 
-public record Notificacion() {
+import java.time.LocalDate;
+
+public record Notificacion(String tipo, String mensaje, LocalDate fecha) {
+
+    @Override
+    public String toString() {
+        return "[" + tipo + "] " + mensaje + " (" + fecha + ")";
+    }
 }

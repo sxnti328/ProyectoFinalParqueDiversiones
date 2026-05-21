@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" prefWidth="1000" prefHeight="740"
+      style="-fx-background-color:#ecf0f1;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.proyectofinalparque.controller.AdminController">
+
+    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+    <!-- Cabecera -->
+    <HBox alignment="CENTER_LEFT" spacing="14">
+        <Button text="← Volver" onAction="#volver"
+                style="-fx-background-color:#7f8c8d; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+        <Label text="Panel Administrador — Tech-Park UQ"
+               style="-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+    </HBox>
+
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- ═══════════════ Tab Operadores ═══════════════ -->
+        <Tab text="👷 Operadores">
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <TitledPane text="Nuevo Operador" collapsible="false">
+                    <GridPane hgap="10" vgap="8">
+                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                        <Label text="Nombre:"     GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtOpNombre" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" promptText="Nombre completo"/>
+                        <Label text="Documento:"  GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtOpDocumento" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="160" promptText="Documento"/>
+                        <Label text="Edad:"       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtOpEdad" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200" promptText="Años"/>
+                        <Label text="ID Empleado:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtOpIdEmp" GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="160" promptText="EMP-XXX"/>
+                        <Label text="Turno:"      GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtOpTurno" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200" promptText="Manana / Tarde / Noche"/>
+                        <Label text="Zona:"       GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                        <ComboBox fx:id="cbOpZona" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="160" promptText="Zona"/>
+                    </GridPane>
+                </TitledPane>
+                <HBox spacing="10">
+                    <Button text="💾 Agregar Operador" onAction="#guardarOperador"
+                            style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Button text="🗑️ Eliminar Seleccionado" onAction="#eliminarOperador"
+                            style="-fx-background-color:#c0392b; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Label fx:id="lblOpMsg"/>
+                </HBox>
+                <TableView fx:id="tablaOperadores" prefHeight="300">
+                    <columns>
+                        <TableColumn fx:id="colOpNombre" text="Nombre"    prefWidth="200"/>
+                        <TableColumn fx:id="colOpDoc"    text="Documento" prefWidth="140"/>
+                        <TableColumn fx:id="colOpTurno"  text="Turno"     prefWidth="130"/>
+                        <TableColumn fx:id="colOpZona"   text="Zona"      prefWidth="120"/>
+                    </columns>
+                    <placeholder><Label text="Sin operadores registrados"/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ═══════════════ Tab Zonas ═══════════════ -->
+        <Tab text="🗺️ Zonas">
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <TitledPane text="Nueva Zona" collapsible="false">
+                    <GridPane hgap="10" vgap="8">
+                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                        <Label text="ID Zona:"     GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtZonaId"    GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="160" promptText="Ej: Z004"/>
+                        <Label text="Nombre:"      GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtZonaNombre" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200" promptText="Nombre de la zona"/>
+                        <Label text="Descripción:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtZonaDesc"  GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="160" promptText="Descripción"/>
+                        <Label text="Capacidad:"   GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtZonaCap"   GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="200" promptText="Número máximo de personas"/>
+                    </GridPane>
+                </TitledPane>
+                <HBox spacing="10">
+                    <Button text="💾 Agregar Zona" onAction="#guardarZona"
+                            style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Button text="🗑️ Eliminar Seleccionada" onAction="#eliminarZona"
+                            style="-fx-background-color:#c0392b; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Label fx:id="lblZonaMsg"/>
+                </HBox>
+                <TableView fx:id="tablaZonas" prefHeight="350">
+                    <columns>
+                        <TableColumn fx:id="colZonaId"     text="ID"         prefWidth="100"/>
+                        <TableColumn fx:id="colZonaNombre" text="Nombre"     prefWidth="220"/>
+                        <TableColumn fx:id="colZonaCap"    text="Capacidad"  prefWidth="100"/>
+                    </columns>
+                    <placeholder><Label text="Sin zonas registradas"/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ═══════════════ Tab Atracciones ═══════════════ -->
+        <Tab text="🎢 Atracciones">
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <TitledPane text="Nueva Atracción" collapsible="false">
+                    <GridPane hgap="10" vgap="8">
+                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                        <Label text="ID:"         GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtAtrId" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="140" promptText="Ej: A006"/>
+                        <Label text="Nombre:"     GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtAtrNombre" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200" promptText="Nombre atracción"/>
+                        <Label text="Tipo:"       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="cbAtrTipo" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="140"/>
+                        <Label text="Zona:"       GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <ComboBox fx:id="cbAtrZona" GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="200" promptText="Zona destino"/>
+                        <Label text="Capacidad:"  GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtAtrCap" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="140" promptText="Por ciclo"/>
+                        <Label text="Altura min (m):" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtAtrAltura" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="200" promptText="Ej: 1.40"/>
+                        <Label text="Edad mín:"   GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtAtrEdad" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="140" promptText="Años"/>
+                        <Label text="Costo adic $:" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtAtrCosto" GridPane.rowIndex="3" GridPane.columnIndex="3" prefWidth="200" promptText="0 si no aplica"/>
+                    </GridPane>
+                </TitledPane>
+                <HBox spacing="10">
+                    <Button text="💾 Agregar Atracción" onAction="#guardarAtraccion"
+                            style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Button text="🗑️ Eliminar Seleccionada" onAction="#eliminarAtraccion"
+                            style="-fx-background-color:#c0392b; -fx-text-fill:white; -fx-background-radius:6; -fx-cursor:hand;"/>
+                    <Label fx:id="lblAtrMsg"/>
+                </HBox>
+                <TableView fx:id="tablaAtracciones" prefHeight="280">
+                    <columns>
+                        <TableColumn fx:id="colAtrNombre"    text="Nombre"     prefWidth="200"/>
+                        <TableColumn fx:id="colAtrTipo"      text="Tipo"       prefWidth="150"/>
+                        <TableColumn fx:id="colAtrEstado"    text="Estado"     prefWidth="140"/>
+                        <TableColumn fx:id="colAtrVisitantes" text="Visitantes" prefWidth="100"/>
+                    </columns>
+                    <placeholder><Label text="Sin atracciones registradas"/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ═══════════════ Tab Alertas Climáticas ═══════════════ -->
+        <Tab text="⛈️ Alertas">
+            <VBox spacing="16" alignment="CENTER">
+                <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+                <Label text="Control de Alertas Climáticas"
+                       style="-fx-font-size:18; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+                <Label text="Al activar la alerta, todas las atracciones acuáticas y mecánicas de altura se cerrarán automáticamente y se notificará a los visitantes."
+                       wrapText="true" style="-fx-font-size:13; -fx-text-fill:#555;" prefWidth="600"/>
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="⚡ Activar Alerta Climática" onAction="#activarAlertaClimatica"
+                            prefWidth="240" prefHeight="50"
+                            style="-fx-background-color:#e74c3c; -fx-text-fill:white; -fx-font-size:14; -fx-background-radius:8; -fx-cursor:hand;"/>
+                    <Button text="✅ Desactivar Alerta" onAction="#desactivarAlertaClimatica"
+                            prefWidth="200" prefHeight="50"
+                            style="-fx-background-color:#27ae60; -fx-text-fill:white; -fx-font-size:14; -fx-background-radius:8; -fx-cursor:hand;"/>
+                </HBox>
+                <Label fx:id="lblAlertaMsg" style="-fx-font-size:14; -fx-font-weight:bold;"/>
+            </VBox>
+        </Tab>
+
+        <!-- ═══════════════ Tab Reportes ═══════════════ -->
+        <Tab text="📊 Reportes">
+            <VBox spacing="12">
+                <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button text="📋 Generar Reporte Diario" onAction="#generarReporte"
+                            style="-fx-background-color:#2980b9; -fx-text-fill:white; -fx-background-radius:6; -fx-font-size:14; -fx-cursor:hand; -fx-pref-height:38;"/>
+                </HBox>
+                <TextArea fx:id="txtReporte" editable="false" wrapText="true"
+                          prefHeight="560"
+                          style="-fx-font-family:monospace; -fx-font-size:13;"
+                          promptText="Presione 'Generar Reporte Diario' para ver las estadísticas del parque..."/>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>

@@ -1,4 +1,15 @@
 package org.example.proyectofinalparque.model.clases;
 
-public class TicketGeneral {
+import org.example.proyectofinalparque.model.enums.TipoTicket;
+
+public class TicketGeneral extends Ticket {
+
+    public TicketGeneral(String id, double precio) {
+        super(id, TipoTicket.GENERAL, precio);
+    }
+
+    @Override
+    public double calcDescuento() {
+        return 0.0;
+    }
 }
