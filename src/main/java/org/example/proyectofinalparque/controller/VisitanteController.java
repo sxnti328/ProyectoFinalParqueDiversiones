@@ -32,7 +32,7 @@ public class VisitanteController {
         return parque.actualizarVisitante(documento, nombre, edad, estatura, telefono, direccion);
     }
 
-    public String comprarTicket(String documento, TipoTicket tipo, double precio) {
-        return parque.venderTicket(documento, tipo, precio, 4);
+    public String comprarTicket(String documento, TipoTicket tipo, double precio, int numIntegrantes) {
+        return parque.venderTicket(documento, tipo, precio, numIntegrantes);
     }
 }

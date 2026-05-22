@@ -36,6 +36,9 @@ public class VisitanteViewController {
 
     @FXML private ComboBox<TipoTicket> cbTipoTicket;
     @FXML private TextField            txtPrecioTicket;
+    @FXML private Label                lblNumIntegrantes;
+    @FXML private TextField            txtNumIntegrantes;
+    @FXML private Label                lblDescuentoInfo;
     @FXML private Label                lblTicketMsg;
 
     public void setApp(App app) {
@@ -145,6 +148,49 @@ public class VisitanteViewController {
     }
 
     @FXML
+    private void onCambiarTipoTicket() {
+        TipoTicket tipo = cbTipoTicket.getValue();
+        boolean esFamiliar = (tipo == TipoTicket.FAMILIAR);
+
+        // Mostrar u ocultar el campo de integrantes segun el tipo
+        lblNumIntegrantes.setVisible(esFamiliar);
+        lblNumIntegrantes.setManaged(esFamiliar);
+        txtNumIntegrantes.setVisible(esFamiliar);
+        txtNumIntegrantes.setManaged(esFamiliar);
+
+        // Actualizar la info del descuento si ya hay precio ingresado
+        actualizarInfoDescuento();
+    }
+
+    // Muestra el descuento calculado cuando el tipo es FAMILIAR
+    private void actualizarInfoDescuento() {
+        TipoTicket tipo = cbTipoTicket.getValue();
+        if (tipo != TipoTicket.FAMILIAR) {
+            lblDescuentoInfo.setText("");
+            return;
+        }
+        try {
+            double precio = Double.parseDouble(txtPrecioTicket.getText());
+            int integrantes = Integer.parseInt(txtNumIntegrantes.getText());
+            double porcentaje;
+            if (integrantes <= 2) {
+                porcentaje = 5;
+            } else if (integrantes == 3) {
+                porcentaje = 10;
+            } else {
+                porcentaje = 15;
+            }
+            double descuento = precio * (porcentaje / 100);
+            double precioFinal = precio - descuento;
+            lblDescuentoInfo.setText("Descuento: " + (int) porcentaje + "% ($"
+                    + String.format("%.0f", descuento) + ") → Precio final: $"
+                    + String.format("%.0f", precioFinal));
+        } catch (NumberFormatException e) {
+            lblDescuentoInfo.setText("");
+        }
+    }
+
+    @FXML
     private void onComprarTicket() {
         if (visitanteSeleccionado == null || cbTipoTicket.getValue() == null) {
             lblTicketMsg.setText("Seleccione visitante y tipo de ticket.");
@@ -152,13 +198,30 @@ public class VisitanteViewController {
         }
         try {
             double precio = Double.parseDouble(txtPrecioTicket.getText());
+            TipoTicket tipo = cbTipoTicket.getValue();
+
+            int numIntegrantes = 1;
+            if (tipo == TipoTicket.FAMILIAR) {
+                String textoInt = txtNumIntegrantes.getText().trim();
+                if (textoInt.isEmpty()) {
+                    lblTicketMsg.setText("Ingrese el numero de integrantes.");
+                    return;
+                }
+                numIntegrantes = Integer.parseInt(textoInt);
+                if (numIntegrantes < 2) {
+                    lblTicketMsg.setText("El ticket familiar requiere al menos 2 integrantes.");
+                    return;
+                }
+            }
+
             String res = visitanteController.comprarTicket(
-                    visitanteSeleccionado.getDocumento(), cbTipoTicket.getValue(), precio);
+                    visitanteSeleccionado.getDocumento(), tipo, precio, numIntegrantes);
             lblTicketMsg.setText(res);
+            lblDescuentoInfo.setText("");
             // Recargamos la tabla para que el saldo se vea actualizado
             recargarTabla();
         } catch (NumberFormatException e) {
-            lblTicketMsg.setText("Precio invalido.");
+            lblTicketMsg.setText("Valores numericos invalidos.");
         }
     }
 

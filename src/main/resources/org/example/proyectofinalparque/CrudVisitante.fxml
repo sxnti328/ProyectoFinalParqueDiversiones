@@ -54,13 +54,16 @@
     </TableView>
 
     <Label text="Comprar ticket:"/>
-    <HBox spacing="8">
+    <HBox spacing="8" alignment="CENTER_LEFT">
         <Label text="Tipo:"/>
-        <ComboBox fx:id="cbTipoTicket" prefWidth="120"/>
+        <ComboBox fx:id="cbTipoTicket" prefWidth="120" onAction="#onCambiarTipoTicket"/>
         <Label text="Precio:"/>
         <TextField fx:id="txtPrecioTicket" prefWidth="100"/>
+        <Label fx:id="lblNumIntegrantes" text="Integrantes:" visible="false" managed="false"/>
+        <TextField fx:id="txtNumIntegrantes" prefWidth="80" promptText="ej: 4" visible="false" managed="false"/>
         <Button text="Comprar" onAction="#onComprarTicket"/>
     </HBox>
+    <Label fx:id="lblDescuentoInfo" text="" style="-fx-text-fill: #2a7a2a;"/>
     <Label fx:id="lblTicketMsg" text=""/>
 
 </VBox>

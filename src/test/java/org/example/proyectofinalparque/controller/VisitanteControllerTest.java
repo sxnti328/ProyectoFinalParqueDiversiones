@@ -94,7 +94,7 @@ public class VisitanteControllerTest {
     @Test
     public void testComprarTicket() {
         controller.crearVisitante(visitante1);
-        String resultado = controller.comprarTicket("11111", TipoTicket.GENERAL, 100.0);
+        String resultado = controller.comprarTicket("11111", TipoTicket.GENERAL, 100.0, 1);
         assertTrue(resultado.contains("comprado") || resultado.contains("Ticket"));
         assertEquals(100.0, visitante1.getSaldoVirtual());
     }
@@ -103,37 +103,48 @@ public class VisitanteControllerTest {
     public void testComprarTicketSinSaldo() {
         Visitante pobre = new Visitante("Pobre", "33333", 20, 1.60, 50.0);
         controller.crearVisitante(pobre);
-        String resultado = controller.comprarTicket("33333", TipoTicket.GENERAL, 100.0);
+        String resultado = controller.comprarTicket("33333", TipoTicket.GENERAL, 100.0, 1);
         assertTrue(resultado.contains("insuficiente"));
         assertEquals(50.0, pobre.getSaldoVirtual());
     }
 
     @Test
     public void testComprarTicketVisitanteNoExistente() {
-        String resultado = controller.comprarTicket("99999", TipoTicket.GENERAL, 50.0);
+        String resultado = controller.comprarTicket("99999", TipoTicket.GENERAL, 50.0, 1);
         assertTrue(resultado.contains("no encontrado"));
     }
 
     @Test
     public void testComprarMultiplesTickets() {
         controller.crearVisitante(visitante1);
-        controller.comprarTicket("11111", TipoTicket.GENERAL, 100.0);
-        controller.comprarTicket("11111", TipoTicket.GENERAL, 50.0);
+        controller.comprarTicket("11111", TipoTicket.GENERAL, 100.0, 1);
+        controller.comprarTicket("11111", TipoTicket.GENERAL, 50.0, 1);
         assertEquals(50.0, visitante1.getSaldoVirtual());
         assertEquals(2, visitante1.getListTickets().size());
     }
 
     @Test
-    public void testComprarTicketFamiliar() {
+    public void testComprarTicketFamiliar2Integrantes() {
+        // 2 integrantes → 5% descuento sobre precio 200 → paga 190
         controller.crearVisitante(visitante1);
-        String resultado = controller.comprarTicket("11111", TipoTicket.FAMILIAR, 300.0);
+        String resultado = controller.comprarTicket("11111", TipoTicket.FAMILIAR, 200.0, 2);
+        assertTrue(resultado.contains("comprado") || resultado.contains("FAMILIAR"));
+        // precio final = 200 - 10 = 190
+        assertEquals(200.0 - 190.0, visitante1.getSaldoVirtual(), 1.0);
+    }
+
+    @Test
+    public void testComprarTicketFamiliar4Integrantes() {
+        // 4 integrantes → 15% descuento sobre 200 → paga 170
+        controller.crearVisitante(visitante1);
+        String resultado = controller.comprarTicket("11111", TipoTicket.FAMILIAR, 200.0, 4);
         assertTrue(resultado.contains("comprado") || resultado.contains("FAMILIAR"));
     }
 
     @Test
     public void testComprarTicketFastPass() {
         controller.crearVisitante(visitante1);
-        String resultado = controller.comprarTicket("11111", TipoTicket.FAST_PASS, 200.0);
+        String resultado = controller.comprarTicket("11111", TipoTicket.FAST_PASS, 200.0, 1);
         assertTrue(resultado.contains("comprado") || resultado.contains("FAST"));
     }
 }
