@@ -14,26 +14,32 @@ public abstract class Persona {
 
 
     public String getNombre() {
+
         return nombre;
     }
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
     public String getDocumento() {
+
         return documento;
     }
     public void setDocumento(String documento) {
+
         this.documento = documento;
     }
     public int getEdad() {
+
         return edad;
     }
     public void setEdad(int edad) {
+
         this.edad = edad;
     }
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + " | Documento: " + documento + " | Edad: " + edad;
+        return "Nombre: " + nombre + "  Documento: " + documento + "  Edad: " + edad;
     }
 }

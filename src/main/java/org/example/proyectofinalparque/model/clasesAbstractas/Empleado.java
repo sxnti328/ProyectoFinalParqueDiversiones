@@ -10,11 +10,15 @@ public abstract class Empleado extends Persona {
         this.idEmpleado = idEmpleado;
     }
 
-    public String getIdEmpleado() { return idEmpleado; }
-    public void setIdEmpleado(String idEmpleado) { this.idEmpleado = idEmpleado; }
+    public String getIdEmpleado() {
+        return idEmpleado;
+    }
+    public void setIdEmpleado(String idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
 
     @Override
     public String toString() {
-        return super.toString() + " | ID Empleado: " + idEmpleado;
+        return super.toString() + "  ID Empleado: " + idEmpleado;
     }
 }

@@ -7,4 +7,6 @@ public interface IAccesible {
     boolean verificarAcceso(Visitante visitante);
     double getCostoAdicional();
     EstadoActual getEstado();
+    // Registra el ingreso del visitante y retorna un mensaje con el resultado
+    String registrarIngreso(Visitante visitante);
 }

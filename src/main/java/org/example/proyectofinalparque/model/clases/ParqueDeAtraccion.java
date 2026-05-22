@@ -1,6 +1,8 @@
 package org.example.proyectofinalparque.model.clases;
 
 import org.example.proyectofinalparque.model.enums.TipoTicket;
+import org.example.proyectofinalparque.model.interfaces.IAccesible;
+import org.example.proyectofinalparque.model.interfaces.IGestionable;
 import org.example.proyectofinalparque.model.records.Notificacion;
 
 import java.time.LocalDate;
@@ -123,13 +125,13 @@ public class ParqueDeAtraccion {
     }
 
     public boolean asignarOperadorAZona(String idEmpleado, String idZona) {
-        Operador o = buscarOperadorPorId(idEmpleado);
-        Zona     z = buscarZona(idZona);
-        if (o == null || z == null) return false;
-        // remove from previous zone
-        for (Zona zona : listZona)
-            zona.getListOperador().removeIf(op -> op.getIdEmpleado().equals(idEmpleado));
-        z.agregarOperador(o);
+        Operador    o    = buscarOperadorPorId(idEmpleado);
+        IGestionable zona = buscarZona(idZona);  // Zona es IGestionable: puede agregar/eliminar
+        if (o == null || zona == null) return false;
+        // quitar el operador de cualquier zona anterior
+        for (Zona z : listZona)
+            z.getListOperador().removeIf(op -> op.getIdEmpleado().equals(idEmpleado));
+        zona.agregar(o);  // delega en el contrato IGestionable
         o.setIdZona(idZona);
         return true;
     }
@@ -157,10 +159,11 @@ public class ParqueDeAtraccion {
 
     // ── CRUD Atraccion ───────────────────────────────────────────────────────
 
+    // Usa IGestionable para agregar: Zona es un contenedor gestionable de atracciones
     public boolean agregarAtraccionAZona(String idZona, Atraccion a) {
-        Zona z = buscarZona(idZona);
-        if (z == null) return false;
-        z.agregarAtraccion(a);
+        IGestionable zona = buscarZona(idZona);
+        if (zona == null) return false;
+        zona.agregar(a);
         return true;
     }
 
@@ -172,10 +175,11 @@ public class ParqueDeAtraccion {
         return null;
     }
 
+    // Usa IGestionable para eliminar: delega en el contrato de Zona
     public boolean eliminarAtraccionDeZona(String idZona, String idAtraccion) {
-        Zona z = buscarZona(idZona);
-        if (z == null) return false;
-        return z.eliminar(idAtraccion);
+        IGestionable zona = buscarZona(idZona);
+        if (zona == null) return false;
+        return zona.eliminar(idAtraccion);
     }
 
     public List<Atraccion> getTodasLasAtracciones() {
@@ -215,15 +219,16 @@ public class ParqueDeAtraccion {
         return "Saldo insuficiente. Necesita $" + String.format("%.0f", ticket.getPrecioFinal());
     }
 
+    // Usa IAccesible como tipo: cualquier cosa "accesible" puede recibir visitantes
     public String ingresarAAtraccion(String documentoVisitante, String idAtraccion) {
         Visitante v = buscarVisitante(documentoVisitante);
-        if (v == null)              return "Visitante no encontrado.";
+        if (v == null)                   return "Visitante no encontrado.";
         if (v.getTicketActivo() == null) return "El visitante no tiene ticket activo.";
 
-        Atraccion a = buscarAtraccion(idAtraccion);
-        if (a == null)              return "Atraccion no encontrada.";
+        IAccesible lugar = buscarAtraccion(idAtraccion);
+        if (lugar == null)               return "Atraccion no encontrada.";
 
-        return a.registrarIngreso(v);
+        return lugar.registrarIngreso(v);
     }
 
     public List<Notificacion> activarAlertaClimatica() {
