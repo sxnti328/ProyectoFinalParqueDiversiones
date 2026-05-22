@@ -15,7 +15,17 @@ public class TicketFamiliar extends Ticket {
 
     @Override
     public double calcDescuento() {
-        return precio * 0.15;
+        // El descuento depende del numero de integrantes
+        // 2 integrantes: 5%, 3: 10%, 4+: 15%
+        double porcentaje;
+        if (numIntegrantes <= 2) {
+            porcentaje = 0.05;
+        } else if (numIntegrantes == 3) {
+            porcentaje = 0.10;
+        } else {
+            porcentaje = 0.15;
+        }
+        return precio * porcentaje;
     }
 
     public int    getNumIntegrantes()      { return numIntegrantes; }
@@ -25,7 +35,10 @@ public class TicketFamiliar extends Ticket {
 
     @Override
     public String toString() {
+        double descuento = calcDescuento();
+        double porcentajeDescuento = (descuento / precio) * 100;
         return super.toString() + " | Integrantes=" + numIntegrantes
-                + " | Descuento=15% ($" + String.format("%.0f", calcDescuento()) + ")";
+                + " | Descuento=" + String.format("%.0f", porcentajeDescuento) + "% ($"
+                + String.format("%.0f", descuento) + ")";
     }
 }

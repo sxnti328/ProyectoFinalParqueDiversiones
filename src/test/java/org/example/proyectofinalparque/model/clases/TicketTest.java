@@ -48,9 +48,25 @@ public class TicketTest {
 
     @Test
     public void testTicketFamiliarConDescuento() {
+        // TicketFamiliar con 4 integrantes: 15% descuento
         double descuento = ticketFamiliar.calcDescuento();
-        assertTrue(descuento > 0);
+        assertEquals(300.0 * 0.15, descuento);
         assertTrue(ticketFamiliar.getPrecioFinal() < ticketFamiliar.getPrecioBase());
+    }
+
+    @Test
+    public void testTicketFamiliarDescuentoPorIntegrantes() {
+        // 2 integrantes: 5%
+        TicketFamiliar dos = new TicketFamiliar("TF002", 100.0, 2, "5% descuento");
+        assertEquals(100.0 * 0.05, dos.calcDescuento());
+
+        // 3 integrantes: 10%
+        TicketFamiliar tres = new TicketFamiliar("TF003", 100.0, 3, "10% descuento");
+        assertEquals(100.0 * 0.10, tres.calcDescuento());
+
+        // 5 integrantes: 15%
+        TicketFamiliar cinco = new TicketFamiliar("TF005", 100.0, 5, "15% descuento");
+        assertEquals(100.0 * 0.15, cinco.calcDescuento());
     }
 
     @Test

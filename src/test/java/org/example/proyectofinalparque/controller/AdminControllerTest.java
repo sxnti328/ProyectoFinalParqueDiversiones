@@ -206,7 +206,7 @@ public class AdminControllerTest {
         parque.agregarZona(z2);
 
         controller.agregarAtraccion(z1, TipoAtraccion.MECANICA_ALTURA, "ATR001", "Montaña", 50, 1.40, 12, 10.0);
-        controller.agregarAtraccion(z1, TipoAtraccion.MECANICA_BAJA, "ATR002", "Tren", 40, 0.8, 4, 5.0);
+        controller.agregarAtraccion(z1, TipoAtraccion.FAMILIAR, "ATR002", "Tren", 40, 0.8, 4, 5.0);
         controller.agregarAtraccion(z2, TipoAtraccion.ACUATICA, "ATR003", "Piscina", 100, 0.0, 0, 0.0);
 
         assertEquals(3, controller.obtenerListaAtracciones().size());
