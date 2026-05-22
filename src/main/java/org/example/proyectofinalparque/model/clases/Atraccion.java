@@ -14,36 +14,36 @@ public class Atraccion implements IAccesible {
 
     private static final int LIMITE_MANTENIMIENTO = 500;
 
-    private String        id;
-    private String        nombre;
+    private String id;
+    private String nombre;
     private TipoAtraccion tipo;
-    private int           capacidadMaxima;
-    private double        alturaMinima;
-    private int           edadMinima;
-    private double        costoAdicional;
-    private int           contadorVisitantes;
-    private int           tiempoEspera;
+    private int  capacidadMaxima;
+    private double alturaMinima;
+    private int edadMinima;
+    private double costoAdicional;
+    private int contadorVisitantes;
+    private int tiempoEspera;
     private EstadoActual  estado;
-    private MotivoCierre  motivoCierre;
-    private Zona          zona;
-    private ColaVirtual   colaVirtual;
+    private MotivoCierre motivoCierre;
+    private Zona zona;
+    private ColaVirtual  colaVirtual;
     private List<RevisionTecnica> revisiones;
 
     public Atraccion(String id, String nombre, TipoAtraccion tipo, int capacidadMaxima,
                      double alturaMinima, int edadMinima, double costoAdicional) {
-        this.id                 = id;
-        this.nombre             = nombre;
-        this.tipo               = tipo;
-        this.capacidadMaxima    = capacidadMaxima;
-        this.alturaMinima       = alturaMinima;
-        this.edadMinima         = edadMinima;
-        this.costoAdicional     = costoAdicional;
+        this.id  = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.capacidadMaxima = capacidadMaxima;
+        this.alturaMinima = alturaMinima;
+        this.edadMinima = edadMinima;
+        this.costoAdicional = costoAdicional;
         this.contadorVisitantes = 0;
-        this.tiempoEspera       = 5;
-        this.estado             = EstadoActual.ACTIVA;
-        this.motivoCierre       = null;
-        this.colaVirtual        = new ColaVirtual();
-        this.revisiones         = new ArrayList<>();
+        this.tiempoEspera = 5;
+        this.estado  = EstadoActual.ACTIVA;
+        this.motivoCierre  = null;
+        this.colaVirtual = new ColaVirtual();
+        this.revisiones  = new ArrayList<>();
     }
 
     // ── IAccesible ──────────────────────────────────────────────────────────
