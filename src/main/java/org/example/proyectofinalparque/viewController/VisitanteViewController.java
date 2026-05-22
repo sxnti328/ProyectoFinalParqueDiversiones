@@ -34,6 +34,8 @@ public class VisitanteViewController {
     @FXML private TableColumn<Visitante, Double>  colEstatura;
     @FXML private TableColumn<Visitante, Double>  colSaldo;
 
+    @FXML private Label                lblNotificacion;
+
     @FXML private ComboBox<TipoTicket> cbTipoTicket;
     @FXML private TextField            txtPrecioTicket;
     @FXML private Label                lblNumIntegrantes;
@@ -53,6 +55,7 @@ public class VisitanteViewController {
         tablaVisitantes.setItems(listVisitantes);
         listenerSeleccion();
         cbTipoTicket.setItems(FXCollections.observableArrayList(TipoTicket.values()));
+        verificarAlertasGlobales();
     }
 
     private void initDataBinding() {
@@ -86,7 +89,40 @@ public class VisitanteViewController {
             txtTelefono.setText(v.getTelefono());
             txtDireccion.setText(v.getDireccion());
             txtEstatura.setText(String.valueOf(v.getEstatura()));
+            mostrarUltimaNotificacion(v);
         }
+    }
+
+    // Muestra la ultima notificacion del visitante seleccionado en la esquina
+    private void mostrarUltimaNotificacion(Visitante v) {
+        if (v.getListNotificaciones().isEmpty()) {
+            lblNotificacion.setVisible(false);
+            lblNotificacion.setManaged(false);
+            return;
+        }
+        // Tomar la notificacion mas reciente (ultima de la lista)
+        var notif = v.getListNotificaciones().get(v.getListNotificaciones().size() - 1);
+        String icono = notif.tipo().equals("CLIMA") ? "⚠ " : "ℹ ";
+        lblNotificacion.setText(icono + notif.mensaje());
+        lblNotificacion.setVisible(true);
+        lblNotificacion.setManaged(true);
+    }
+
+    // Al cargar la vista, verifica si hay alguna alerta climatica activa
+    // y la muestra aunque no haya visitante seleccionado aun
+    private void verificarAlertasGlobales() {
+        for (Visitante v : visitanteController.obtenerListaVisitantes()) {
+            for (var notif : v.getListNotificaciones()) {
+                if (notif.tipo().equals("CLIMA")) {
+                    lblNotificacion.setText("⚠ " + notif.mensaje());
+                    lblNotificacion.setVisible(true);
+                    lblNotificacion.setManaged(true);
+                    return;
+                }
+            }
+        }
+        lblNotificacion.setVisible(false);
+        lblNotificacion.setManaged(false);
     }
 
     @FXML
