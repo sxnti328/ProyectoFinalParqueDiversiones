@@ -14,30 +14,28 @@ public class ParqueDeAtraccion {
     private String nombre;
     private String nit;
     private String direccion;
-    private int    capacidadMax;
-    private int    visitantesActuales;
-
-    private ArrayList<Visitante>     listVisitante;
+    private int capacidadMax;
+    private int visitantesActuales;
+    private ArrayList<Visitante>  listVisitante;
     private ArrayList<Administrador> listAdmin;
-    private ArrayList<Operador>      listOperador;
-    private ArrayList<Zona>          listZona;
-
+    private ArrayList<Operador>  listOperador;
+    private ArrayList<Zona>  listZona;
     private GestorReportes gestorReportes;
 
     public ParqueDeAtraccion(String nombre, String nit, String direccion, int capacidadMax) {
-        this.nombre             = nombre;
-        this.nit                = nit;
-        this.direccion          = direccion;
-        this.capacidadMax       = capacidadMax;
+        this.nombre = nombre;
+        this.nit  = nit;
+        this.direccion = direccion;
+        this.capacidadMax  = capacidadMax;
         this.visitantesActuales = 0;
-        this.listVisitante      = new ArrayList<>();
-        this.listAdmin          = new ArrayList<>();
-        this.listOperador       = new ArrayList<>();
-        this.listZona           = new ArrayList<>();
-        this.gestorReportes     = new GestorReportes(this);
+        this.listVisitante = new ArrayList<>();
+        this.listAdmin = new ArrayList<>();
+        this.listOperador = new ArrayList<>();
+        this.listZona = new ArrayList<>();
+        this.gestorReportes = new GestorReportes(this);
     }
 
-    // ── CRUD Visitante ───────────────────────────────────────────────────────
+
 
     public boolean agregarVisitante(Visitante v) {
         if (visitantesActuales >= capacidadMax) return false;
@@ -73,7 +71,7 @@ public class ParqueDeAtraccion {
         return true;
     }
 
-    // ── CRUD Administrador ───────────────────────────────────────────────────
+
 
     public boolean agregarAdministrador(Administrador a) {
         if (buscarAdministrador(a.getDocumento()) != null) return false;
@@ -94,7 +92,7 @@ public class ParqueDeAtraccion {
         return true;
     }
 
-    // ── CRUD Operador ────────────────────────────────────────────────────────
+
 
     public boolean agregarOperador(Operador o) {
         if (buscarOperador(o.getDocumento()) != null) return false;
@@ -126,17 +124,14 @@ public class ParqueDeAtraccion {
 
     public boolean asignarOperadorAZona(String idEmpleado, String idZona) {
         Operador    o    = buscarOperadorPorId(idEmpleado);
-        IGestionable zona = buscarZona(idZona);  // Zona es IGestionable: puede agregar/eliminar
+        IGestionable zona = buscarZona(idZona);  // Zona es IGestionable, no vaya a mover esta vaina que no corre
         if (o == null || zona == null) return false;
-        // quitar el operador de cualquier zona anterior
         for (Zona z : listZona)
             z.getListOperador().removeIf(op -> op.getIdEmpleado().equals(idEmpleado));
         zona.agregar(o);  // delega en el contrato IGestionable
         o.setIdZona(idZona);
         return true;
     }
-
-    // ── CRUD Zona ────────────────────────────────────────────────────────────
 
     public boolean agregarZona(Zona z) {
         if (buscarZona(z.getIdZona()) != null) return false;
@@ -157,9 +152,6 @@ public class ParqueDeAtraccion {
         return true;
     }
 
-    // ── CRUD Atraccion ───────────────────────────────────────────────────────
-
-    // Usa IGestionable para agregar: Zona es un contenedor gestionable de atracciones
     public boolean agregarAtraccionAZona(String idZona, Atraccion a) {
         IGestionable zona = buscarZona(idZona);
         if (zona == null) return false;
@@ -175,7 +167,7 @@ public class ParqueDeAtraccion {
         return null;
     }
 
-    // Usa IGestionable para eliminar: delega en el contrato de Zona
+    // Usa IGestionable para eliminar
     public boolean eliminarAtraccionDeZona(String idZona, String idAtraccion) {
         IGestionable zona = buscarZona(idZona);
         if (zona == null) return false;
@@ -189,7 +181,8 @@ public class ParqueDeAtraccion {
         return todas;
     }
 
-    // ── Reglas de negocio ────────────────────────────────────────────────────
+
+//HASTA AQUI PEGUE LA PRIMERA PARTE
 
     public String recargarSaldoVisitante(String documentoVisitante, double monto) {
         Visitante v = buscarVisitante(documentoVisitante);
@@ -297,29 +290,47 @@ public class ParqueDeAtraccion {
 
     // ── Getters / Setters ────────────────────────────────────────────────────
 
-    public String getNombre()                          { return nombre; }
-    public void   setNombre(String n)                  { this.nombre = n; }
-    public String getNit()                             { return nit; }
-    public void   setNit(String n)                     { this.nit = n; }
-    public String getDireccion()                       { return direccion; }
-    public void   setDireccion(String d)               { this.direccion = d; }
-    public int    getCapacidadMax()                    { return capacidadMax; }
-    public void   setCapacidadMax(int c)               { this.capacidadMax = c; }
-    public int    getVisitantesActuales()               { return visitantesActuales; }
+    public String getNombre() {
+        return nombre;
+    }
+    public void   setNombre(String n)  {
+        this.nombre = n;
+    }
+    public String getNit() {
+        return nit;
+    }
+    public void   setNit(String n)  {
+        this.nit = n; }
+    public String getDireccion()
+    {
+        return direccion; }
+    public void   setDireccion(String d) {
+        this.direccion = d; }
+    public int    getCapacidadMax()  {
+        return capacidadMax; }
+    public void   setCapacidadMax(int c)  { this.capacidadMax = c; }
+    public int    getVisitantesActuales() { return visitantesActuales; }
 
-    public ArrayList<Visitante>     getListVisitante() { return listVisitante; }
-    public ArrayList<Administrador> getListAdmin()     { return listAdmin; }
-    public ArrayList<Operador>      getListOperador()  { return listOperador; }
-    public ArrayList<Zona>          getListZona()      { return listZona; }
+    public ArrayList<Visitante>     getListVisitante() {
+        return listVisitante; }
+    public ArrayList<Administrador> getListAdmin()     {
+        return listAdmin; }
+    public ArrayList<Operador>      getListOperador()  {
+        return listOperador;
+    }
+    public ArrayList<Zona>          getListZona()  {
+        return listZona; }
 
-    public void setListVisitante(ArrayList<Visitante> l)     { this.listVisitante = l; }
-    public void setListAdmin(ArrayList<Administrador> l)     { this.listAdmin = l; }
+    public void setListVisitante(ArrayList<Visitante> l)  {
+        this.listVisitante = l; }
+    public void setListAdmin(ArrayList<Administrador> l)    {
+        this.listAdmin = l; }
     public void setListZona(ArrayList<Zona> l)               { this.listZona = l; }
 
     @Override
     public String toString() {
         return "ParqueDeAtraccion: " + nombre + " | NIT: " + nit
-                + " | Visitantes: " + visitantesActuales + "/" + capacidadMax
-                + " | Zonas: " + listZona.size();
+                + "  Visitantes: " + visitantesActuales + "/" + capacidadMax
+                + "  Zonas: " + listZona.size();
     }
 }
